@@ -1,0 +1,25 @@
+@media (min-width: 720px) {
+  /* Show nav horizontally */
+  .primary-nav{display:block;margin-left:1rem}
+  .primary-nav ul{display:flex;gap:0}
+  .primary-nav a{color:#fff;padding:.5rem 1rem}
+
+  .hamburger{display:none} /* hide hamburger on larger screens */
+
+  .header-inner{justify-content:flex-start}
+
+  .about-student{display:grid;grid-template-columns:2fr 1fr;gap:1rem;align-items:start}
+
+  h1{font-size:2.25rem}
+
+  .course-list{max-width:800px;margin:0 auto}
+
+  .course-card{flex-direction:row;align-items:center;justify-content:space-between;padding:1rem}
+  .course-title{font-size:1rem}
+}
+
+@media (min-width: 980px) {
+  .header-inner{max-width:1100px;margin:0 auto;padding:1rem}
+  .main-content{max-width:1100px;margin:1.25rem auto}
+  .site-footer{max-width:1100px;margin:1.5rem auto}
+}
