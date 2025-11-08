@@ -1,25 +1,102 @@
 @media (min-width: 720px) {
+  .header-inner {
+    justify-content: space-between;
+    padding: 1rem;
+  }
+
   /* Show nav horizontally */
-  .primary-nav{display:block;margin-left:1rem}
-  .primary-nav ul{display:flex;gap:0}
-  .primary-nav a{color:#fff;padding:.5rem 1rem}
+  .primary-nav {
+    display: block !important;
+    position: static;
+    width: auto;
+    background: transparent;
+    animation: none;
+    margin-left: 0;
+  }
 
-  .hamburger{display:none} /* hide hamburger on larger screens */
+  .primary-nav ul {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
 
-  .header-inner{justify-content:flex-start}
+  .primary-nav a {
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+  }
 
-  .about-student{display:grid;grid-template-columns:2fr 1fr;gap:1rem;align-items:start}
+  .primary-nav a:hover,
+  .primary-nav a:focus {
+    background: rgba(255,255,255,0.15);
+  }
 
-  h1{font-size:2.25rem}
+  .primary-nav a.active {
+    background: rgba(255,255,255,0.25);
+  }
 
-  .course-list{max-width:800px;margin:0 auto}
+  .hamburger {
+    display: none; /* hide hamburger on larger screens */
+  }
 
-  .course-card{flex-direction:row;align-items:center;justify-content:space-between;padding:1rem}
-  .course-title{font-size:1rem}
+  .about-student {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  h1 {
+    font-size: 2.25rem;
+  }
+
+  .course-list {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .course-card {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem;
+  }
+
+  .course-title {
+    font-size: 1rem;
+  }
+
+  .certificate-info {
+    padding: 1.5rem;
+  }
 }
 
 @media (min-width: 980px) {
-  .header-inner{max-width:1100px;margin:0 auto;padding:1rem}
-  .main-content{max-width:1100px;margin:1.25rem auto}
-  .site-footer{max-width:1100px;margin:1.5rem auto}
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1rem;
+  }
+
+  .main-content {
+    max-width: 1100px;
+    margin: 1.25rem auto;
+  }
+
+  .site-footer {
+    max-width: 1100px;
+    margin: 1.5rem auto;
+  }
+
+  .primary-nav ul {
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 720px) {
+  .about p {
+    margin-bottom: 1.25rem;
+    line-height: 1.7;
+  }
 }
