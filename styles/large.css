@@ -94,9 +94,3 @@
   }
 }
 
-@media (min-width: 720px) {
-  .about p {
-    margin-bottom: 1.25rem;
-    line-height: 1.7;
-  }
-}
