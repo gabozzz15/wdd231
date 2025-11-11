@@ -1,0 +1,58 @@
+[
+  {
+    "name": "Empresas Polar",
+    "address": "Av. Francisco de Miranda, Los Cortijos de Lourdes, Caracas",
+    "phone": "+58 212-555-0001",
+    "website": "https://empresaspolar.com",
+    "image": "polar.svg",
+    "membership": 3
+  },
+  {
+    "name": "Banco Mercantil",
+    "address": "Av. Principal de Las Mercedes, Caracas",
+    "phone": "+58 212-555-0002",
+    "website": "https://mercantilbanco.com",
+    "image": "mercantil.png",
+    "membership": 3
+  },
+  {
+    "name": "Ron Santa Teresa",
+    "address": "Hacienda Santa Teresa, El Consejo, Edo. Aragua",
+    "phone": "+58 244-555-0003",
+    "website": "https://ronsantateresa.com",
+    "image": "santa-teresa.png",
+    "membership": 2
+  },
+  {
+    "name": "Farmatodo",
+    "address": "Av. Rómulo Gallegos, Boleíta, Caracas",
+    "phone": "+58 212-555-0004",
+    "website": "https://farmatodo.com.ve",
+    "image": "farmatodo.jpeg",
+    "membership": 2
+  },
+  {
+    "name": "CANTV",
+    "address": "Av. Libertador, Torre CANTV, Caracas",
+    "phone": "+58 212-555-0005",
+    "website": "https://cantv.com.ve",
+    "image": "cantv.png",
+    "membership": 1
+  },
+  {
+    "name": "Cervecería Regional",
+    "address": "Zona Industrial, Maracaibo, Edo. Zulia",
+    "phone": "+58 261-555-0006",
+    "website": "https://cerveceriaregional.com",
+    "image": "cerveceria-regional.png",
+    "membership": 1
+  },
+  {
+    "name": "Digitel",
+    "address": "Av. Principal de El Cafetal, Caracas",
+    "phone": "+58 212-555-0007",
+    "website": "https://digitel.com.ve",
+    "image": "digitel.jpg",
+    "membership": 3
+  }
+]
