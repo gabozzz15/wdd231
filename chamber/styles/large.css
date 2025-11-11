@@ -10,10 +10,12 @@
     display: block !important;
     position: static;
     background: transparent;
+    max-width: 360px;
   }
 
   .primary-nav ul {
     display: flex;
+    justify-content: flex-end;
     gap: 1rem;
   }
 

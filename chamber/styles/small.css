@@ -30,7 +30,7 @@ body {
   border-radius: 4px;
 }
 
-/* HEADER */
+
 .site-header {
   background: var(--accent);
   color: #fff;
@@ -41,9 +41,14 @@ body {
   gap: 1rem;
   padding: .75rem;
 }
+.logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .logo-img {
   height: 48px;
-  filter: brightness(0) invert(1); /* makes SVG white */
+  filter: brightness(0) invert(1); 
 }
 .site-name {
   font-weight: 700;
@@ -107,7 +112,6 @@ body {
 .primary-nav a:hover { background: rgba(255,255,255,0.15); }
 .primary-nav a.active { background: rgba(255,255,255,0.25); }
 
-/* MAIN */
 .main-content {
   max-width: 1100px;
   margin: 1rem auto;
@@ -135,7 +139,6 @@ h1 {
   border-color: var(--accent-2);
 }
 
-/* DIRECTORY */
 .directory {
   display: flex;
   flex-direction: column;
@@ -166,7 +169,6 @@ h1 {
   font-size: .9rem;
 }
 
-/* FOOTER */
 .site-footer {
   text-align: center;
   color: var(--muted);
