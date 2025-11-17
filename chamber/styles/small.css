@@ -136,9 +136,10 @@ h1 {
 .filter-btn {
   padding: .5rem 1rem;
   border-radius: 6px;
-  border: 2px solid #bbb;
-  background: #eee;
+  border: 2px solid #666; 
+  background: #f8f8f8;
   cursor: pointer;
+  color: #333;
 }
 .filter-btn.active {
   background: var(--accent-2);
