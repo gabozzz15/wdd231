@@ -66,4 +66,46 @@
     margin: 1.5rem auto;
     background: var(--bg);
   }
+
+.hero {
+  padding: 4rem 2rem;
+}
+
+.hero-content h1 {
+  font-size: 2.5rem;
+}
+
+.events-container {
+  flex-direction: row;
+}
+
+.event-card {
+  flex: 1;
+}
+
+.weather-container {
+  flex-direction: row;
+}
+
+.current-weather, .weather-forecast {
+  flex: 1;
+}
+
+.forecast-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.forecast-day {
+  flex: 1;
+}
+
+.spotlight-container {
+  flex-direction: row;
+}
+
+.spotlight-card {
+  flex: 1;
+}
 }
