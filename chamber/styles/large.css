@@ -108,4 +108,35 @@
 .spotlight-card {
   flex: 1;
 }
+
+.join-container {
+  flex-direction: row;
+  align-items: flex-start;
 }
+
+.membership-form {
+  flex: 2;
+}
+
+.membership-cards {
+  flex: 1;
+  position: sticky;
+  top: 2rem;
+}
+
+.cards-container {
+  grid-template-columns: 1fr;
+}
+
+.radio-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.modal-content {
+  margin: 5% auto;
+}
+}
+
+
