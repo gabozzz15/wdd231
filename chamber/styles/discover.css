@@ -1,0 +1,209 @@
+.visitor-message {
+  background: var(--accent);
+  color: white;
+  padding: 1rem;
+  border-radius: var(--radius);
+  margin-bottom: 2rem;
+  text-align: center;
+  animation: slideDown 0.5s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.demographics {
+  margin-bottom: 2rem;
+}
+
+.demographics-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.demographic-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.demographic-card h3 {
+  color: var(--accent);
+  margin-top: 0;
+  font-size: 1rem;
+}
+
+.demographic-card .stat {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--accent-2);
+  margin: 0.5rem 0;
+}
+
+.attractions-grid {
+  display: grid;
+  grid-template-areas:
+    "attraction1"
+    "attraction2"
+    "attraction3"
+    "attraction4"
+    "attraction5"
+    "attraction6"
+    "attraction7"
+    "attraction8";
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.attraction-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.attraction-card:hover {
+  transform: translateY(-5px);
+}
+
+.attraction-card h2 {
+  color: var(--accent);
+  margin: 0;
+  padding: 1rem 1rem 0.5rem;
+  font-size: 1.25rem;
+}
+
+.attraction-card figure {
+  margin: 0;
+  overflow: hidden;
+}
+
+.attraction-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+@media (min-width: 641px) {
+  .attraction-card img:hover {
+    transform: scale(1.05);
+  }
+}
+
+.attraction-card address {
+  font-style: normal;
+  padding: 0 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+}
+
+.attraction-card p {
+  padding: 0 1rem;
+  margin: 0.5rem 0 1rem;
+  line-height: 1.4;
+}
+
+.attraction-card .learn-more {
+  display: inline-block;
+  background: var(--accent);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  text-decoration: none;
+  margin: 0 1rem 1rem;
+  transition: background 0.3s ease;
+}
+
+.attraction-card .learn-more:hover {
+  background: var(--accent-2);
+}
+
+.attraction-card:nth-child(1) { grid-area: attraction1; }
+.attraction-card:nth-child(2) { grid-area: attraction2; }
+.attraction-card:nth-child(3) { grid-area: attraction3; }
+.attraction-card:nth-child(4) { grid-area: attraction4; }
+.attraction-card:nth-child(5) { grid-area: attraction5; }
+.attraction-card:nth-child(6) { grid-area: attraction6; }
+.attraction-card:nth-child(7) { grid-area: attraction7; }
+.attraction-card:nth-child(8) { grid-area: attraction8; }
+
+@media (min-width: 641px) {
+  .demographics-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .attractions-grid {
+    grid-template-areas:
+      "attraction1 attraction2"
+      "attraction3 attraction4"
+      "attraction5 attraction6"
+      "attraction7 attraction8";
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1025px) {
+  .demographics-grid {
+    gap: 1.5rem;
+  }
+  
+  .demographic-card {
+    padding: 1.5rem;
+  }
+  
+  .demographic-card h3 {
+    font-size: 1.125rem;
+  }
+  
+  .demographic-card .stat {
+    font-size: 1.75rem;
+  }
+  
+  .attractions-grid {
+    grid-template-areas:
+      "attraction1 attraction2 attraction3 attraction4"
+      "attraction5 attraction6 attraction7 attraction8";
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+  
+  .attraction-card h2 {
+    font-size: 1.375rem;
+    padding: 1.5rem 1.5rem 0.75rem;
+  }
+  
+  .attraction-card address,
+  .attraction-card p {
+    padding: 0 1.5rem;
+  }
+  
+  .attraction-card .learn-more {
+    margin: 0 1.5rem 1.5rem;
+  }
+}
+
+@media (min-width: 641px) {
+  .attraction-card img {
+    filter: brightness(0.95);
+  }
+  
+  .attraction-card img:hover {
+    filter: brightness(1.05) contrast(1.1);
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  }
+}

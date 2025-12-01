@@ -137,6 +137,16 @@
 .modal-content {
   margin: 5% auto;
 }
+  
+.main-content {
+  max-width: 1200px;
 }
+
+.demographics-grid {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+}
+
 
 

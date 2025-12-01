@@ -740,3 +740,17 @@ legend {
     text-align: center;
   }
 }
+
+.demographics h2,
+.attractions h2 {
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.demographics {
+  margin-bottom: 2rem;
+}
+
+.attractions {
+  margin-bottom: 2rem;
+}

@@ -1,18 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Venezuelan Chamber of Commerce Directory Page">
+  <meta name="description" content="Discover Caracas, Venezuela - Tourism and Local Attractions">
   <meta name="author" content="Gabriel Bastardo">
 
   <!-- Facebook Meta -->
-  <meta property="og:title" content="Venezuelan Chamber of Commerce Directory">
-  <meta property="og:description" content="Discover Venezuelan businesses and connect through our Chamber Directory, in this you can look for local services, products, and more.">
+  <meta property="og:title" content="Discover Caracas - Venezuelan Chamber of Commerce">
+  <meta property="og:description" content="Explore the attractions, culture, and business opportunities in Caracas">
   <meta property="og:image" content="https://gabozzz15.github.io/wdd231/chamber/images/logo.svg">
-  <meta property="og:url" content="https://gabozzz15.github.io/wdd231/chamber/directory.html">
+  <meta property="og:url" content="https://gabozzz15.github.io/wdd231/chamber/discover.html">
 
-  <title>Venezuelan Chamber of Commerce | Directory</title>
+  <title>Discover Caracas | Venezuelan Chamber of Commerce</title>
   <link rel="icon" href="images/favicon.ico">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,8 +22,9 @@
   <link rel="stylesheet" href="styles/normalize.css">
   <link rel="stylesheet" href="styles/small.css">
   <link rel="stylesheet" href="styles/large.css">
+  <link rel="stylesheet" href="styles/discover.css">
 
-  <script src="scripts/directory.js" defer></script>
+  <script src="scripts/discover.js" type="module" defer></script>
 </head>
 
 <body>
@@ -45,23 +46,55 @@
       <nav class="primary-nav">
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="directory.html" class="active">Directory</a></li>
+          <li><a href="directory.html">Directory</a></li>
           <li><a href="join.html">Join</a></li>
-          <li><a href="discover.html">Discover</a></li>
+          <li><a href="discover.html" class="active">Discover</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
   <main id="main-content" class="main-content">
-    <h1>Business Directory</h1>
-    <div class="view-controls">
-      <button id="gridView" class="filter-btn active">Grid View</button>
-      <button id="listView" class="filter-btn">List View</button>
+    <h1>Discover Caracas</h1>
+    
+    <!-- Visitor Welcome Message -->
+    <div id="visitor-message" class="visitor-message">
+      <!-- Message will be loaded via JavaScript -->
     </div>
 
-    <section id="members-container" class="directory grid-view">
-      <!-- Members loaded via JS -->
+    <!-- Demographics Section -->
+    <section class="demographics">
+      <h2>Caracas Demographics</h2>
+      <div class="demographics-grid">
+        <div class="demographic-card">
+          <h3>Population</h3>
+          <p class="stat">2.9 Million</p>
+          <p>Metropolitan Area</p>
+        </div>
+        <div class="demographic-card">
+          <h3>Elevation</h3>
+          <p class="stat">900m</p>
+          <p>Above sea level</p>
+        </div>
+        <div class="demographic-card">
+          <h3>Founded</h3>
+          <p class="stat">1567</p>
+          <p>By Diego de Losada</p>
+        </div>
+        <div class="demographic-card">
+          <h3>Climate</h3>
+          <p class="stat">Tropical</p>
+          <p>Year-round spring weather</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Attractions Gallery -->
+    <section class="attractions">
+      <h2>Local Attractions</h2>
+      <div class="attractions-grid" id="attractions-container">
+        <!-- Cards will be loaded via JavaScript -->
+      </div>
     </section>
   </main>
 
