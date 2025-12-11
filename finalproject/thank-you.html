@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Thank you for subscribing to News & Weather Hub">
+    <meta name="author" content="Your Name">
+    
+    <title>Thank You | News & Weather Hub</title>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/small.css">
+    <link rel="stylesheet" href="styles/large.css">
+    
+    <!-- JavaScript -->
+    <script src="scripts/main.js" defer></script>
+    <script src="scripts/thankyou.js" defer></script>
+</head>
+<body>
+    <!-- Skip to Content Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/logo-weather-news.png" alt="News & Weather Hub Logo" class="logo-img">
+                </a>
+                <h1 class="site-name">News & Weather Hub</h1>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button class="hamburger" aria-label="Toggle navigation menu">
+                <span class="hamburger-box">
+                    <span class="hamburger-inner"></span>
+                </span>
+            </button>
+            
+            <!-- Navigation -->
+            <nav class="primary-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="news.html">News</a></li>
+                    <li><a href="weather.html">Weather</a></li>
+                    <li><a href="index.html#newsletter">Newsletter</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main id="main-content" class="main-content">
+        <div class="thank-you-container">
+            <div class="thank-you-card">
+                <div class="thank-you-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                
+                <h2>Thank You for Subscribing!</h2>
+                
+                <div class="confirmation-message">
+                    <p>Your subscription to our newsletter has been confirmed.</p>
+                    <p>You will start receiving daily updates with the latest news and weather information.</p>
+                </div>
+                
+                <!-- Subscription Details -->
+                <div class="subscription-details" id="subscription-details">
+                    <h3>Your Subscription Details:</h3>
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <span class="detail-label">Email:</span>
+                            <span class="detail-value" id="detail-email">Loading...</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Categories:</span>
+                            <span class="detail-value" id="detail-categories">Loading...</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Weather Alerts:</span>
+                            <span class="detail-value" id="detail-alerts">Loading...</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Subscription Date:</span>
+                            <span class="detail-value" id="detail-date">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Next Steps -->
+                <div class="next-steps">
+                    <h3>What's Next?</h3>
+                    <div class="steps-grid">
+                        <div class="step-card">
+                            <div class="step-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <h4>Welcome Email</h4>
+                            <p>Check your inbox for a welcome email with more information about our services.</p>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-icon">
+                                <i class="fas fa-newspaper"></i>
+                            </div>
+                            <h4>First Newsletter</h4>
+                            <p>Your first newsletter will arrive within 24 hours with the latest updates.</p>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-icon">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <h4>Manage Preferences</h4>
+                            <p>You can update your preferences or unsubscribe at any time from the newsletter footer.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a href="index.html" class="btn btn-primary">
+                        <i class="fas fa-home"></i> Back to Home
+                    </a>
+                    <a href="news.html" class="btn btn-secondary">
+                        <i class="fas fa-newspaper"></i> Browse News
+                    </a>
+                    <a href="weather.html" class="btn btn-secondary">
+                        <i class="fas fa-cloud-sun"></i> Check Weather
+                    </a>
+                </div>
+                
+                <!-- Additional Info -->
+                <div class="additional-info">
+                    <div class="info-card">
+                        <i class="fas fa-question-circle"></i>
+                        <h4>Need Help?</h4>
+                        <p>If you have any questions about your subscription, please contact us at <strong>support@newsweatherhub.com</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/logo-weather-news.png" alt="News & Weather Hub Logo">
+                    <h3>News & Weather Hub</h3>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="news.html">News</a></li>
+                        <li><a href="weather.html">Weather</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> gabitobastardo@gmail.com</p>
+                    <div class="social-icons">
+                        <a href="https://github.com/gabozzz15/" aria-label="github"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/gabriel-bastardo-4b1426357/?locale=en-US" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year"></span> Gabriel Bastardo | Venezuela</p>
+                <p>WDD 231 Project | Data sources: NewsAPI & OpenWeatherMap</p>
+                <p id="last-modified"></p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Latest news from around the world - Stay updated with News & Weather Hub">
+    <meta name="author" content="Your Name">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Latest News | News & Weather Hub">
+    <meta property="og:description" content="Breaking news, top stories, and in-depth coverage from around the world">
+    <meta property="og:image" content="images/logo.svg">
+    <meta property="og:url" content="https://yourdomain.com/news.html">
+    <meta property="og:type" content="website">
+    
+    <title>Latest News | News & Weather Hub</title>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/small.css">
+    <link rel="stylesheet" href="styles/large.css">
+    
+    <!-- JavaScript -->
+    <script src="scripts/news.js" type="module" defer></script>
+</head>
+<body>
+    <!-- Skip to Content Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/logo-weather-news.png" alt="News & Weather Hub Logo" class="logo-img">
+                </a>
+                <h1 class="site-name">News & Weather Hub</h1>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button class="hamburger" aria-label="Toggle navigation menu">
+                <span class="hamburger-box">
+                    <span class="hamburger-inner"></span>
+                </span>
+            </button>
+            
+            <!-- Navigation -->
+            <nav class="primary-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="news.html" class="active">News</a></li>
+                    <li><a href="weather.html">Weather</a></li>
+                    <li><a href="#categories">Categories</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main id="main-content" class="main-content">
+        <!-- News Page Hero -->
+        <section class="page-hero">
+            <div class="container">
+                <h2>Latest News from Around the World</h2>
+                <p>Stay informed with up-to-date coverage of global events</p>
+                
+                <!-- News Search -->
+                <div class="news-search-container">
+                    <input type="text" placeholder="Search for news articles..." id="news-search-input">
+                    <button id="news-search-btn"><i class="fas fa-search"></i> Search</button>
+                    
+                    <!-- Category Filter -->
+                    <div class="category-filter">
+                        <select id="category-select">
+                            <option value="all">All Categories</option>
+                            <option value="general">General</option>
+                            <option value="business">Business</option>
+                            <option value="technology">Technology</option>
+                            <option value="sports">Sports</option>
+                            <option value="health">Health</option>
+                            <option value="science">Science</option>
+                            <option value="entertainment">Entertainment</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Category Navigation -->
+        <section class="category-nav" id="categories">
+            <div class="container">
+                <div class="category-buttons">
+                    <button class="category-btn active" data-category="all">All News</button>
+                    <button class="category-btn" data-category="general">General</button>
+                    <button class="category-btn" data-category="business">Business</button>
+                    <button class="category-btn" data-category="technology">Technology</button>
+                    <button class="category-btn" data-category="sports">Sports</button>
+                    <button class="category-btn" data-category="health">Health</button>
+                    <button class="category-btn" data-category="science">Science</button>
+                    <button class="category-btn" data-category="entertainment">Entertainment</button>
+                </div>
+            </div>
+        </section>
+        
+        <!-- News Grid -->
+        <section class="news-articles">
+            <div class="container">
+                <div class="news-header">
+                    <h3><i class="fas fa-newspaper"></i> Top Stories</h3>
+                    <div class="sort-options">
+                        <select id="sort-select">
+                            <option value="publishedAt">Most Recent</option>
+                            <option value="relevancy">Most Relevant</option>
+                            <option value="popularity">Most Popular</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- News Loading Indicator -->
+                <div class="loading-indicator" id="news-loading">
+                    <div class="spinner"></div>
+                    <p>Loading news articles...</p>
+                </div>
+                
+                <!-- News Grid Container -->
+                <div class="news-grid" id="news-grid-container">
+                    <!-- News articles will be loaded here -->
+                </div>
+                
+                <!-- Load More Button -->
+                <div class="load-more-container" id="load-more-container">
+                    <button id="load-more-btn" class="load-more-btn">
+                        <i class="fas fa-plus"></i> Load More Articles
+                    </button>
+                </div>
+                
+                <!-- No Results Message -->
+                <div class="no-results-message" id="no-results-message" style="display: none;">
+                    <i class="fas fa-search"></i>
+                    <h4>No articles found</h4>
+                    <p>Try adjusting your search or filter criteria</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- News Sources -->
+        <section class="news-sources">
+            <div class="container">
+                <h3><i class="fas fa-globe"></i> Trusted News Sources</h3>
+                <div class="sources-grid">
+                    <!-- Sources will be loaded dynamically -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- Save Preferences Modal -->
+        <div id="preferences-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>News Preferences</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="preferences-form">
+                        <div class="form-group">
+                            <label for="default-category">Default Category</label>
+                            <select id="default-category">
+                                <option value="general">General</option>
+                                <option value="business">Business</option>
+                                <option value="technology">Technology</option>
+                                <option value="sports">Sports</option>
+                                <option value="health">Health</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="save-preferences" checked>
+                                Remember my preferences
+                            </label>
+                        </div>
+                        <button type="submit" class="btn-save">Save Preferences</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/logo-weather-news.png" alt="News & Weather Hub Logo">
+                    <h3>News & Weather Hub</h3>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="news.html">News</a></li>
+                        <li><a href="weather.html">Weather</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> gabitobastardo@gmail.com</p>
+                    <div class="social-icons">
+                        <a href="https://github.com/gabozzz15/" aria-label="github"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/gabriel-bastardo-4b1426357/?locale=en-US" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year"></span> Gabriel Bastardo | Venezuela</p>
+                <p>WDD 231 Project | Data sources: NewsAPI & OpenWeatherMap</p>
+                <p id="last-modified"></p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

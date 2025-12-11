@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="News & Weather Hub - Your one-stop destination for real-time news and weather updates">
+    <meta name="author" content="Your Name">
+    
+    <meta property="og:title" content="News & Weather Hub">
+    <meta property="og:description" content="Get the latest news and weather updates in one place">
+    <meta property="og:image" content="images/logo.svg">
+    <meta property="og:url" content="https://yourdomain.com">
+    <meta property="og:type" content="website">
+    
+    <title>News & Weather Hub | Home</title>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/small.css">
+    <link rel="stylesheet" href="styles/large.css">
+   
+    <script src="scripts/index.js" type="module" defer></script>
+</head>
+<body>    
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <img src="images/logo-weather-news.png" alt="News & Weather Hub Logo" class="logo-img">
+                <h1 class="site-name">News & Weather Hub</h1>
+            </div>
+            
+            <button class="hamburger" aria-label="Toggle navigation menu">
+                <span class="hamburger-box">
+                    <span class="hamburger-inner"></span>
+                </span>
+            </button>
+            
+            <nav class="primary-nav">
+                <ul>
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="news.html">News</a></li>
+                    <li><a href="weather.html">Weather</a></li>
+                    <li><a href="#newsletter" class="newsletter-btn">Newsletter</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main id="main-content" class="main-content">
+
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Stay Informed, Stay Ahead</h2>
+                <p>Real-time news and accurate weather forecasts in one seamless experience</p>
+                <div class="hero-search">
+                    <input type="text" placeholder="Search for news or location..." id="global-search">
+                    <button type="button" id="search-btn">Search</button>
+                </div>
+            </div>
+        </section>
+        
+        <section class="breaking-news">
+            <h2><i class="fas fa-bolt"></i> Breaking News</h2>
+            <div class="breaking-news-container" id="breaking-news-container">
+                <!-- Dynamic content from API -->
+            </div>
+        </section>
+        
+        <section class="weather-widget">
+            <h2><i class="fas fa-cloud-sun"></i> Current Weather</h2>
+            <div class="weather-container" id="current-weather">
+                <!-- Dynamic content from OpenWeatherMap API -->
+            </div>
+        </section>
+        
+        <section class="top-stories">
+            <h2><i class="fas fa-newspaper"></i> Top Stories</h2>
+            <div class="stories-grid" id="top-stories">
+                <!-- Dynamic content from NewsAPI -->
+            </div>
+        </section>
+        
+        <section class="newsletter" id="newsletter">
+            <h2><i class="fas fa-envelope"></i> Stay Updated</h2>
+            <p>Subscribe to our daily newsletter for curated news and weather updates</p>
+            <form id="newsletter-form" method="get" action="thank-you.html">
+                <div class="form-group">
+                    <label for="email">Email Address *</label>
+                    <input type="email" id="email" name="email" required 
+                        placeholder="your.email@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="news-categories">News Categories</label>
+                    <select id="news-categories" name="categories" multiple>
+                        <option value="general">General</option>
+                        <option value="technology">Technology</option>
+                        <option value="business">Business</option>
+                        <option value="sports">Sports</option>
+                        <option value="health">Health</option>
+                        <option value="science">Science</option>
+                    </select>
+                    <small>Hold Ctrl/Cmd to select multiple</small>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="weather-alerts" checked>
+                        Include weather alerts for my location
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="terms" required>
+                        I agree to receive newsletters and accept the <a href="#" style="color: var(--secondary-blue);">Terms & Conditions</a>
+                    </label>
+                </div>
+                <input type="hidden" name="timestamp" id="timestamp-field">
+                <button type="submit" class="btn-subscribe">Subscribe</button>
+            </form>
+        </section>
+    </main>
+    
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/logo-weather-news.png" alt="News & Weather Hub Logo">
+                    <h3>News & Weather Hub</h3>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="news.html">News</a></li>
+                        <li><a href="weather.html">Weather</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> gabitobastardo@gmail.com</p>
+                    <div class="social-icons">
+                        <a href="https://github.com/gabozzz15/" aria-label="github"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/gabriel-bastardo-4b1426357/?locale=en-US" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year"></span> Gabriel Bastardo | Venezuela</p>
+                <p>WDD 231 Project | Data sources: NewsAPI & OpenWeatherMap</p>
+                <p id="last-modified"></p>
+            </div>
+        </div>
+    </footer>
+    
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const timestampField = document.getElementById('timestamp-field');
+        if (timestampField) {
+            timestampField.value = new Date().toISOString();
+        }
+        
+        const newsletterForm = document.getElementById('newsletter-form');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', function(e) {
+                const categorySelect = document.getElementById('news-categories');
+                if (categorySelect && categorySelect.selectedOptions.length === 0) {
+                    categorySelect.querySelector('option[value="general"]').selected = true;
+                }                
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

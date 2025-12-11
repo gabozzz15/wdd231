@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Accurate weather forecasts and climate information - News & Weather Hub">
+    <meta name="author" content="Your Name">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Weather Forecast | News & Weather Hub">
+    <meta property="og:description" content="Accurate weather forecasts, radar maps, and climate information">
+    <meta property="og:image" content="images/logo.svg">
+    <meta property="og:url" content="https://yourdomain.com/weather.html">
+    <meta property="og:type" content="website">
+    
+    <title>Weather Forecast | News & Weather Hub</title>
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/small.css">
+    <link rel="stylesheet" href="styles/large.css">
+    <link rel="stylesheet" href="styles/weather.css">
+    
+    <!-- JavaScript -->
+    <script src="scripts/weather.js" type="module" defer></script>
+</head>
+<body>
+    <!-- Skip to Content Link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="images/logo-weather-news.png" alt="News & Weather Hub Logo" class="logo-img">
+                </a>
+                <h1 class="site-name">News & Weather Hub</h1>
+            </div>
+            
+            <!-- Mobile Menu Button -->
+            <button class="hamburger" aria-label="Toggle navigation menu">
+                <span class="hamburger-box">
+                    <span class="hamburger-inner"></span>
+                </span>
+            </button>
+            
+            <!-- Navigation -->
+            <nav class="primary-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="news.html">News</a></li>
+                    <li><a href="weather.html" class="active">Weather</a></li>
+                    <li><a href="#locations">My Locations</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main id="main-content" class="main-content">
+        <!-- Weather Page Hero -->
+        <section class="weather-hero">
+            <div class="container">
+                <h2>Weather Forecast</h2>
+                <p>Accurate weather information for your location</p>
+                
+                <!-- Location Search -->
+                <div class="location-search">
+                    <div class="search-box">
+                        <input type="text" 
+                               placeholder="Search for a city..." 
+                               id="location-search-input"
+                               list="suggestions">
+                        <datalist id="suggestions"></datalist>
+                        <button id="location-search-btn">
+                            <i class="fas fa-search"></i> Search
+                        </button>
+                        <button id="use-location-btn" title="Use my current location">
+                            <i class="fas fa-location-crosshairs"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Current Location Display -->
+                    <div class="current-location" id="current-location-display">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span id="location-name">Caracas, Venezuela</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Current Weather -->
+        <section class="current-weather-section">
+            <div class="container">
+                <h3><i class="fas fa-sun"></i> Current Weather</h3>
+                
+                <!-- Loading Indicator -->
+                <div class="loading-indicator" id="weather-loading">
+                    <div class="spinner"></div>
+                    <p>Loading weather data...</p>
+                </div>
+                
+                <!-- Current Weather Card -->
+                <div class="current-weather-card" id="current-weather-card">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+                
+                <!-- Weather Details Grid -->
+                <div class="weather-details-grid" id="weather-details">
+                    <!-- Weather details will be loaded here -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- 5-Day Forecast -->
+        <section class="forecast-section">
+            <div class="container">
+                <h3><i class="fas fa-calendar-alt"></i> 5-Day Forecast</h3>
+                <div class="forecast-container" id="forecast-container">
+                    <!-- Forecast cards will be loaded here -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- Saved Locations -->
+        <section class="saved-locations" id="locations">
+            <div class="container">
+                <div class="locations-header">
+                    <h3><i class="fas fa-star"></i> Saved Locations</h3>
+                    <button class="btn-add-location" id="add-location-btn">
+                        <i class="fas fa-plus"></i> Add Location
+                    </button>
+                </div>
+                
+                <div class="locations-grid" id="saved-locations-grid">
+                    <!-- Saved locations will be loaded here -->
+                </div>
+                
+                <div class="no-locations" id="no-locations-message" style="display: none;">
+                    <i class="fas fa-star"></i>
+                    <h4>No saved locations</h4>
+                    <p>Add locations to quickly check their weather</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Add Location Modal -->
+        <div id="add-location-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Add New Location</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="location-form">
+                        <div class="form-group">
+                            <label for="new-location">City Name</label>
+                            <input type="text" 
+                                   id="new-location" 
+                                   placeholder="e.g., New York, London, Tokyo"
+                                   required>
+                        </div>
+                        <div class="form-group">
+                            <label for="location-label">Custom Label (Optional)</label>
+                            <input type="text" 
+                                   id="location-label" 
+                                   placeholder="e.g., Home, Office, Vacation">
+                        </div>
+                        <button type="submit" class="btn-add">Add Location</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Map Modal -->
+        <div id="map-modal" class="modal">
+            <div class="modal-content modal-map">
+                <div class="modal-header">
+                    <h3 id="map-modal-title">Weather Map</h3>
+                    <button class="modal-close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="map-container" id="full-map-container">
+                        <!-- Full map will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <img src="images/logo-weather-news.png" alt="News & Weather Hub Logo">
+                    <h3>News & Weather Hub</h3>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="news.html">News</a></li>
+                        <li><a href="weather.html">Weather</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-contact">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> gabitobastardo@gmail.com</p>
+                    <div class="social-icons">
+                        <a href="https://github.com/gabozzz15/" aria-label="github"><i class="fab fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/gabriel-bastardo-4b1426357/?locale=en-US" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year"></span> Gabriel Bastardo | Venezuela</p>
+                <p>WDD 231 Project | Data sources: NewsAPI & OpenWeatherMap</p>
+                <p id="last-modified"></p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

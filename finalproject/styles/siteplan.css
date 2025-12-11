@@ -1,0 +1,346 @@
+/* Color Scheme */
+:root {
+    --primary-blue: #1e3a8a;
+    --secondary-blue: #3b82f6;
+    --accent-orange: #f97316;
+    --neutral-light: #f8fafc;
+    --neutral-dark: #1e293b;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+}
+
+/* Typography */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    line-height: 1.6;
+    color: var(--text-primary);
+    background-color: var(--neutral-light);
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3, h4 {
+    font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-weight: 700;
+    color: var(--primary-blue);
+}
+
+/* Layout */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+header {
+    background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+    color: white;
+    padding: 2rem 0;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+header h1 {
+    color: white;
+    margin-bottom: 0.5rem;
+    font-size: 2.5rem;
+}
+
+.tagline {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+section {
+    background: white;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+h2 {
+    border-left: 5px solid var(--accent-orange);
+    padding-left: 1rem;
+    margin-top: 0;
+    font-size: 1.8rem;
+}
+
+h3 {
+    color: var(--secondary-blue);
+    margin-top: 1.5rem;
+    font-size: 1.5rem;
+}
+
+/* Color Palette Display */
+.color-palette {
+    display: flex;
+    gap: 1rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+}
+
+.color-sample {
+    width: 120px;
+    height: 120px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease;
+}
+
+.color-sample:hover {
+    transform: scale(1.05);
+}
+
+.color-primary { background-color: var(--primary-blue); }
+.color-secondary { background-color: var(--secondary-blue); }
+.color-accent { background-color: var(--accent-orange); }
+.color-light { background-color: var(--neutral-light); color: var(--text-primary); text-shadow: none; }
+.color-dark { background-color: var(--neutral-dark); }
+
+/* Color Usage List */
+.color-usage {
+    margin-top: 1rem;
+}
+
+.color-usage li {
+    margin-bottom: 0.5rem;
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.color-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+/* Typography Display */
+.typography-sample {
+    margin: 1.5rem 0;
+    padding: 1.5rem;
+    border-left: 3px solid var(--secondary-blue);
+    background-color: var(--neutral-light);
+    border-radius: 5px;
+}
+
+.font-heading {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    color: var(--primary-blue);
+    font-size: 1.8rem;
+    margin-top: 0;
+}
+
+.font-heading-example {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    color: var(--primary-blue);
+    margin: 0.5rem 0;
+}
+
+.font-body {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem;
+    color: var(--neutral-dark);
+    margin-top: 0;
+}
+
+.font-body-example {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    margin: 0.5rem 0;
+}
+
+/* Wireframe Section */
+.wireframe-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.wireframe {
+    border: 2px solid var(--secondary-blue);
+    border-radius: 8px;
+    padding: 1.5rem;
+    background-color: var(--neutral-light);
+}
+
+.wireframe h3 {
+    text-align: center;
+    margin-top: 0;
+    color: var(--primary-blue);
+}
+
+.wireframe-grid {
+    display: grid;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+.mobile-view .wireframe-grid {
+    grid-template-rows: auto auto auto auto auto;
+}
+
+.desktop-view .wireframe-grid {
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: auto auto auto auto;
+    gap: 15px;
+}
+
+.wireframe-item {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 1rem;
+    text-align: center;
+    font-weight: 500;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header { background-color: var(--primary-blue); color: white; }
+.hero { background-color: var(--secondary-blue); color: white; }
+.news { background-color: #e0f2fe; }
+.weather { background-color: #fef3c7; }
+.sidebar { background-color: #dcfce7; }
+.sidebar > div {
+    margin: 5px 0;
+    padding: 8px;
+    background-color: white;
+    border-radius: 3px;
+}
+.footer { 
+    background-color: var(--neutral-dark); 
+    color: white; 
+    grid-column: 1 / -1; 
+}
+
+/* Scenario Cards */
+.scenarios {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.scenario-card {
+    background-color: var(--neutral-light);
+    border-radius: 8px;
+    padding: 1.5rem;
+    border-left: 4px solid var(--accent-orange);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.scenario-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.scenario-card h4 {
+    margin-top: 0;
+    color: var(--accent-orange);
+    font-family: 'Montserrat', sans-serif;
+}
+
+.scenario-card h4 i {
+    margin-right: 8px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 2rem 0;
+    color: var(--text-secondary);
+    border-top: 1px solid #e2e8f0;
+    margin-top: 2rem;
+    background-color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    section {
+        padding: 1.5rem;
+    }
+    
+    .desktop-view .wireframe-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .color-sample {
+        width: 100px;
+        height: 100px;
+        font-size: 0.9rem;
+    }
+    
+    .scenarios {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    h3 {
+        font-size: 1.3rem;
+    }
+    
+    .color-palette {
+        justify-content: center;
+    }
+    
+    .color-sample {
+        width: 80px;
+        height: 80px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Section Icons */
+h2 i {
+    margin-right: 10px;
+}
+
+/* Lists */
+ul {
+    padding-left: 1.5rem;
+}
+
+ul li {
+    margin-bottom: 0.5rem;
+}
+
+/* Strong text */
+strong {
+    color: var(--primary-blue);
+}
+
+/* Additional spacing for better readability */
+p {
+    margin-bottom: 1rem;
+}
