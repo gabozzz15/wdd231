@@ -463,7 +463,20 @@ function setupNewsletterForm() {
         };
 
         Storage.set('newsletter-preferences', preferences);
+    });
 
+    // Set timestamp field value
+    const timestampField = document.getElementById('timestamp-field');
+    if (timestampField) {
+        timestampField.value = new Date().toISOString();
+    }
+
+    // Ensure at least one category is selected on submit
+    newsletterForm.addEventListener('submit', function () {
+        const categorySelect = document.getElementById('news-categories');
+        if (categorySelect && categorySelect.selectedOptions.length === 0) {
+            categorySelect.querySelector('option[value="general"]').selected = true;
+        }
     });
 }
 

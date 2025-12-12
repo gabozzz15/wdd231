@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,8 +9,8 @@
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Weather Forecast | News & Weather Hub">
     <meta property="og:description" content="Accurate weather forecasts, radar maps, and climate information">
-    <meta property="og:image" content="images/logo.svg">
-    <meta property="og:url" content="https://yourdomain.com/weather.html">
+    <meta property="og:image" content="https://gabozzz15.github.io/wdd231/finalproject/images/hero-bg.jpg">
+    <meta property="og:url" content="https://gabozzz15.github.io/wdd231/finalproject/index.html">
     <meta property="og:type" content="website">
     
     <title>Weather Forecast | News & Weather Hub</title>
@@ -31,7 +31,7 @@
     <link rel="stylesheet" href="styles/weather.css">
     
     <!-- JavaScript -->
-    <script src="scripts/weather.js" type="module" defer></script>
+    <script src="scripts/weather.js" type="module"></script>
 </head>
 <body>
     <!-- Skip to Content Link -->
@@ -39,7 +39,7 @@
     
     <!-- Header -->
     <header class="site-header">
-        <div class="container">
+        <div class="page-container">
             <div class="logo">
                 <a href="index.html">
                     <img src="images/logo-weather-news.png" alt="News & Weather Hub Logo" class="logo-img">
@@ -70,7 +70,7 @@
     <main id="main-content" class="main-content">
         <!-- Weather Page Hero -->
         <section class="weather-hero">
-            <div class="container">
+            <div class="page-container">
                 <h2>Weather Forecast</h2>
                 <p>Accurate weather information for your location</p>
                 
@@ -101,7 +101,7 @@
         
         <!-- Current Weather -->
         <section class="current-weather-section">
-            <div class="container">
+            <div class="page-container">
                 <h3><i class="fas fa-sun"></i> Current Weather</h3>
                 
                 <!-- Loading Indicator -->
@@ -124,7 +124,7 @@
         
         <!-- 5-Day Forecast -->
         <section class="forecast-section">
-            <div class="container">
+            <div class="page-container">
                 <h3><i class="fas fa-calendar-alt"></i> 5-Day Forecast</h3>
                 <div class="forecast-container" id="forecast-container">
                     <!-- Forecast cards will be loaded here -->
@@ -134,7 +134,7 @@
         
         <!-- Saved Locations -->
         <section class="saved-locations" id="locations">
-            <div class="container">
+            <div class="page-container">
                 <div class="locations-header">
                     <h3><i class="fas fa-star"></i> Saved Locations</h3>
                     <button class="btn-add-location" id="add-location-btn">
@@ -199,7 +199,7 @@
     </main>
     
     <footer class="site-footer">
-        <div class="container">
+        <div class="page-container">
             <div class="footer-content">
                 <div class="footer-logo">
                     <img src="images/logo-weather-news.png" alt="News & Weather Hub Logo">

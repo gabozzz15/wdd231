@@ -1,4 +1,4 @@
-:root {
+﻿:root {
     --primary-blue: #1e3a8a;
     --secondary-blue: #3b82f6;
     --accent-orange: #f97316;
@@ -27,7 +27,7 @@ body {
     background-color: var(--neutral-light);
 }
 
-.container {
+.page-container {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
