@@ -1,28 +1,23 @@
-// Main JavaScript for common functionality across all pages
-
-// Hamburger menu functionality
 export function setupHamburgerMenu() {
     const hamburger = document.querySelector('.hamburger');
     const primaryNav = document.querySelector('.primary-nav');
-    
+
     if (!hamburger || !primaryNav) return;
-    
+
     hamburger.addEventListener('click', () => {
         hamburger.classList.toggle('active');
         primaryNav.classList.toggle('active');
     });
 
-    // Close mobile menu when clicking outside
     document.addEventListener('click', (e) => {
-        if (primaryNav.classList.contains('active') && 
-            !primaryNav.contains(e.target) && 
+        if (primaryNav.classList.contains('active') &&
+            !primaryNav.contains(e.target) &&
             !hamburger.contains(e.target)) {
             hamburger.classList.remove('active');
             primaryNav.classList.remove('active');
         }
     });
 
-    // Close mobile menu on escape key
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && primaryNav.classList.contains('active')) {
             hamburger.classList.remove('active');
@@ -31,7 +26,6 @@ export function setupHamburgerMenu() {
     });
 }
 
-// Update current year in footer
 export function updateFooterYear() {
     const currentYearElement = document.getElementById('current-year');
     if (currentYearElement) {
@@ -39,7 +33,6 @@ export function updateFooterYear() {
     }
 }
 
-// Update last modified date
 export function updateLastModified() {
     const lastModifiedElement = document.getElementById('last-modified');
     if (lastModifiedElement) {
@@ -58,19 +51,16 @@ export class Modal {
     init() {
         if (!this.modal) return;
 
-        // Close modal on close button click
         this.closeButtons?.forEach(button => {
             button.addEventListener('click', () => this.close());
         });
 
-        // Close modal when clicking outside
         this.modal.addEventListener('click', (e) => {
             if (e.target === this.modal) {
                 this.close();
             }
         });
 
-        // Close modal on escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this.modal.style.display === 'block') {
                 this.close();
@@ -93,22 +83,20 @@ export class Modal {
     }
 }
 
-// Initialize all modals on the page
 export function initializeModals() {
     const modals = document.querySelectorAll('.modal');
     const modalInstances = {};
-    
+
     modals.forEach(modal => {
         const modalId = modal.id;
         if (modalId) {
             modalInstances[modalId] = new Modal(modalId);
         }
     });
-    
+
     return modalInstances;
 }
 
-// Loading spinner utility
 export const LoadingSpinner = {
     show(containerId) {
         const container = document.getElementById(containerId);
@@ -236,13 +224,13 @@ export const FormValidator = {
         errorElement.style.color = 'var(--error-red)';
         errorElement.style.fontSize = '0.875rem';
         errorElement.style.marginTop = '0.25rem';
-        
+
         // Remove existing error
         const existingError = field.parentNode.querySelector('.error-message');
         if (existingError) {
             existingError.remove();
         }
-        
+
         field.parentNode.appendChild(errorElement);
         field.style.borderColor = 'var(--error-red)';
     },
@@ -258,7 +246,7 @@ export const FormValidator = {
     clearAllErrors(form) {
         const errors = form.querySelectorAll('.error-message');
         errors.forEach(error => error.remove());
-        
+
         const fields = form.querySelectorAll('input, select, textarea');
         fields.forEach(field => {
             field.style.borderColor = '';
@@ -266,7 +254,6 @@ export const FormValidator = {
     }
 };
 
-// Debounce utility for search inputs
 export function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -279,7 +266,6 @@ export function debounce(func, wait) {
     };
 }
 
-// Throttle utility for scroll events
 export function throttle(func, limit) {
     let inThrottle;
     return function executedFunction(...args) {
@@ -291,17 +277,16 @@ export function throttle(func, limit) {
     };
 }
 
-// Format date utility
 export function formatDate(dateString, format = 'relative') {
     const date = new Date(dateString);
     const now = new Date();
-    
+
     if (format === 'relative') {
         const diffInMs = now - date;
         const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
         const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
         const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-        
+
         if (diffInMinutes < 1) {
             return 'Just now';
         } else if (diffInMinutes < 60) {
@@ -312,7 +297,7 @@ export function formatDate(dateString, format = 'relative') {
             return `${diffInDays} day${diffInDays !== 1 ? 's' : ''} ago`;
         }
     }
-    
+
     // Default format
     return date.toLocaleDateString('en-US', {
         month: 'short',
@@ -323,19 +308,14 @@ export function formatDate(dateString, format = 'relative') {
     });
 }
 
-// Capitalize first letter utility
 export function capitalizeFirstLetter(string) {
     if (!string) return '';
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
-
-// Truncate text utility
 export function truncateText(text, maxLength) {
     if (text.length <= maxLength) return text;
     return text.substr(0, maxLength) + '...';
 }
-
-// Display error message utility
 export function displayErrorMessage(containerId, message) {
     const container = document.getElementById(containerId);
     if (container) {
@@ -351,14 +331,12 @@ export function displayErrorMessage(containerId, message) {
     }
 }
 
-// Initialize common functionality
 export function initializeCommon() {
     setupHamburgerMenu();
     updateFooterYear();
     updateLastModified();
     initializeModals();
-    
-    // Handle last visit message
+
     handleLastVisitMessage();
 }
 
@@ -366,19 +344,19 @@ export function initializeCommon() {
 function handleLastVisitMessage() {
     const visitorMessage = document.getElementById('visitor-message');
     if (!visitorMessage) return;
-    
+
     const lastVisit = Storage.get('last-visit');
     const currentVisit = Date.now();
-    
+
     let message = '';
-    
+
     if (!lastVisit) {
         // First visit
         message = 'Welcome! Let us know if you have any questions.';
     } else {
         const lastVisitDate = parseInt(lastVisit);
         const daysBetween = Math.floor((currentVisit - lastVisitDate) / (1000 * 60 * 60 * 24));
-        
+
         if (daysBetween === 0) {
             message = 'Back so soon! Awesome!';
         } else if (daysBetween === 1) {
@@ -387,15 +365,14 @@ function handleLastVisitMessage() {
             message = `You last visited ${daysBetween} days ago.`;
         }
     }
-    
+
     // Store current visit
     Storage.set('last-visit', currentVisit);
-    
+
     // Display message
     visitorMessage.innerHTML = `<p>${message}</p>`;
 }
 
-// Export everything as a default object for backward compatibility
 export default {
     setupHamburgerMenu,
     updateFooterYear,

@@ -1,21 +1,18 @@
-import { 
-    LoadingSpinner, 
-    Storage, 
-    FormValidator, 
+import {
+    LoadingSpinner,
+    Storage,
+    FormValidator,
     debounce,
     formatDate,
     capitalizeFirstLetter,
     displayErrorMessage,
-    initializeCommon 
+    initializeCommon
 } from './main.js';
 
-// API Configuration
-const NEWS_API_KEY = 'fa6a29ed86a447fe9b1f7e126df60078'; 
+const NEWS_API_KEY = 'fa6a29ed86a447fe9b1f7e126df60078';
 
-// Initialize common functionality
 initializeCommon();
 
-// DOM Elements
 const newsGridContainer = document.getElementById('news-grid-container');
 const newsLoading = document.getElementById('news-loading');
 const loadMoreContainer = document.getElementById('load-more-container');
@@ -30,7 +27,6 @@ const sourcesGrid = document.querySelector('.sources-grid');
 const preferencesModal = document.getElementById('preferences-modal');
 const preferencesForm = document.getElementById('preferences-form');
 
-// State variables
 let currentPage = 1;
 let currentCategory = 'all';
 let currentSearchQuery = '';
@@ -39,7 +35,6 @@ let allArticles = [];
 let filteredArticles = [];
 const articlesPerPage = 12;
 
-// Initialize page
 document.addEventListener('DOMContentLoaded', () => {
     loadUserPreferences();
     loadNewsSources();
@@ -47,16 +42,13 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
 });
 
-// Load user preferences from localStorage
 function loadUserPreferences() {
     const preferences = Storage.get('news-preferences') || {};
-    
-    // Set category from preferences or default
+
     if (preferences.defaultCategory) {
         currentCategory = preferences.defaultCategory;
         categorySelect.value = currentCategory;
-        
-        // Activate corresponding category button
+
         document.querySelectorAll('.category-btn').forEach(btn => {
             btn.classList.remove('active');
             if (btn.dataset.category === currentCategory) {
@@ -64,15 +56,13 @@ function loadUserPreferences() {
             }
         });
     }
-    
-    // Set sort preference
+
     if (preferences.sortBy) {
         currentSortBy = preferences.sortBy;
         sortSelect.value = currentSortBy;
     }
 }
 
-// Load news sources
 function loadNewsSources() {
     const sources = [
         { name: 'BBC News', domain: 'bbc.com', country: 'gb' },
@@ -82,7 +72,7 @@ function loadNewsSources() {
         { name: 'The Guardian', domain: 'theguardian.com', country: 'gb' },
         { name: 'Al Jazeera', domain: 'aljazeera.com', country: 'qa' }
     ];
-    
+
     const sourcesHTML = sources.map(source => `
         <div class="source-card">
             <div class="source-icon">
@@ -94,7 +84,7 @@ function loadNewsSources() {
             </div>
         </div>
     `).join('');
-    
+
     sourcesGrid.innerHTML = sourcesHTML;
 }
 
@@ -103,9 +93,9 @@ async function loadArticles() {
     try {
         newsLoading.style.display = 'flex';
         noResultsMessage.style.display = 'none';
-        
+
         let apiUrl;
-        
+
         if (currentSearchQuery) {
             // Search for specific query
             apiUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(currentSearchQuery)}&sortBy=${currentSortBy}&page=${currentPage}&pageSize=${articlesPerPage}&apiKey=${NEWS_API_KEY}`;
@@ -116,30 +106,29 @@ async function loadArticles() {
             // Get general top headlines
             apiUrl = `https://newsapi.org/v2/top-headlines?country=us&page=${currentPage}&pageSize=${articlesPerPage}&apiKey=${NEWS_API_KEY}`;
         }
-        
+
         const response = await fetch(apiUrl);
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const data = await response.json();
-        
+
         if (data.articles && data.articles.length > 0) {
             // Filter out removed articles
-            const validArticles = data.articles.filter(article => 
+            const validArticles = data.articles.filter(article =>
                 article.title !== '[Removed]' && article.urlToImage
             );
-            
+
             if (currentPage === 1) {
                 allArticles = validArticles;
             } else {
                 allArticles = [...allArticles, ...validArticles];
             }
-            
+
             displayArticles();
-            
-            // Show/hide load more button
+
             if (validArticles.length === articlesPerPage) {
                 loadMoreContainer.style.display = 'block';
             } else {
@@ -160,21 +149,21 @@ async function loadArticles() {
     }
 }
 
-// Display articles in grid
+// Display articles
 function displayArticles() {
     if (currentPage === 1) {
         newsGridContainer.innerHTML = '';
     }
-    
+
     const startIndex = (currentPage - 1) * articlesPerPage;
     const endIndex = startIndex + articlesPerPage;
     const articlesToShow = allArticles.slice(startIndex, endIndex);
-    
+
     if (articlesToShow.length === 0) {
         showNoResults();
         return;
     }
-    
+
     const articlesHTML = articlesToShow.map((article) => `
         <article class="news-card">
             <div class="news-card-image">
@@ -197,7 +186,7 @@ function displayArticles() {
             </div>
         </article>
     `).join('');
-    
+
     if (currentPage === 1) {
         newsGridContainer.innerHTML = articlesHTML;
     } else {
@@ -205,87 +194,71 @@ function displayArticles() {
     }
 }
 
-// Show no results message
 function showNoResults() {
     newsGridContainer.innerHTML = '';
     noResultsMessage.style.display = 'block';
     loadMoreContainer.style.display = 'none';
 }
 
-// Setup event listeners
 function setupEventListeners() {
-    // Category buttons
     categoryButtons.forEach(button => {
         button.addEventListener('click', () => {
-            // Update active state
             categoryButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
-            
-            // Update category
+
             currentCategory = button.dataset.category;
             categorySelect.value = currentCategory;
-            
-            // Reset and load articles
+
             resetAndLoadArticles();
         });
     });
-    
-    // Category select
+
     categorySelect.addEventListener('change', () => {
         currentCategory = categorySelect.value;
-        
-        // Update active button
+
         categoryButtons.forEach(btn => {
             btn.classList.remove('active');
             if (btn.dataset.category === currentCategory) {
                 btn.classList.add('active');
             }
         });
-        
+
         resetAndLoadArticles();
     });
-    
-    // Sort select
+
     sortSelect.addEventListener('change', () => {
         currentSortBy = sortSelect.value;
         resetAndLoadArticles();
-        
-        // Save preference
         const preferences = Storage.get('news-preferences') || {};
         preferences.sortBy = currentSortBy;
         Storage.set('news-preferences', preferences);
     });
-    
-    // Search input with debounce
+
     const debouncedSearch = debounce((query) => {
         currentSearchQuery = query;
         resetAndLoadArticles();
     }, 500);
-    
+
     newsSearchInput.addEventListener('input', (e) => {
         debouncedSearch(e.target.value);
     });
-    
-    // Search button
+
     newsSearchBtn.addEventListener('click', () => {
         currentSearchQuery = newsSearchInput.value;
         resetAndLoadArticles();
     });
-    
-    // Load more button
     loadMoreBtn.addEventListener('click', () => {
         currentPage++;
         loadArticles();
     });
-    
-    // Preferences form
+
     if (preferencesForm) {
         preferencesForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            
+
             const defaultCategory = document.getElementById('default-category').value;
             const savePreferences = document.getElementById('save-preferences').checked;
-            
+
             if (savePreferences) {
                 const preferences = {
                     defaultCategory,
@@ -293,20 +266,18 @@ function setupEventListeners() {
                 };
                 Storage.set('news-preferences', preferences);
             }
-            
-            // Close modal
+
             const modal = document.getElementById('preferences-modal');
             if (modal) {
                 modal.style.display = 'none';
                 document.body.style.overflow = '';
             }
-            
+
             showNotification('Preferences saved!');
         });
     }
 }
 
-// Show notification
 function showNotification(message) {
     const notification = document.createElement('div');
     notification.className = 'notification';
@@ -314,15 +285,13 @@ function showNotification(message) {
         <i class="fas fa-check-circle"></i>
         <span>${message}</span>
     `;
-    
+
     document.body.appendChild(notification);
-    
-    // Show notification
+
     setTimeout(() => {
         notification.classList.add('show');
     }, 10);
-    
-    // Remove notification after 3 seconds
+
     setTimeout(() => {
         notification.classList.remove('show');
         setTimeout(() => {
@@ -331,14 +300,12 @@ function showNotification(message) {
     }, 3000);
 }
 
-// Reset and load articles
 function resetAndLoadArticles() {
     currentPage = 1;
     allArticles = [];
     loadArticles();
 }
 
-// Export for testing
 export {
     loadArticles,
     resetAndLoadArticles

@@ -1,19 +1,16 @@
-import { 
-    LoadingSpinner, 
-    Storage, 
-    FormValidator, 
+import {
+    LoadingSpinner,
+    Storage,
+    FormValidator,
     debounce,
     displayErrorMessage,
-    initializeCommon 
+    initializeCommon
 } from './main.js';
 
-// API Configuration
-const WEATHER_API_KEY = 'cd2d094e1adbb9c4c2055c1f34b4a2e1'; // Replace with your actual key
+const WEATHER_API_KEY = 'cd2d094e1adbb9c4c2055c1f34b4a2e1';
 
-// Initialize common functionality
 initializeCommon();
 
-// DOM Elements
 const locationSearchInput = document.getElementById('location-search-input');
 const locationSearchBtn = document.getElementById('location-search-btn');
 const useLocationBtn = document.getElementById('use-location-btn');
@@ -29,13 +26,9 @@ const locationForm = document.getElementById('location-form');
 const weatherLoading = document.getElementById('weather-loading');
 const suggestionsList = document.getElementById('suggestions');
 
-
-// State variables
 let currentLocation = Storage.get('weather-location') || 'Caracas';
 let savedLocations = Storage.get('saved-locations') || [];
-let unitSystem = Storage.get('weather-units') || 'metric'; // metric or imperial
-
-// Popular cities for suggestions
+let unitSystem = Storage.get('weather-units') || 'metric';
 const popularCities = [
     'New York', 'London', 'Tokyo', 'Paris', 'Sydney',
     'Berlin', 'Moscow', 'Beijing', 'Dubai', 'Singapore',
@@ -43,7 +36,6 @@ const popularCities = [
     'São Paulo', 'Buenos Aires', 'Cairo', 'Nairobi', 'Mumbai'
 ];
 
-// Initialize page
 document.addEventListener('DOMContentLoaded', () => {
     loadPopularCitiesSuggestions();
     loadSavedLocations();
@@ -51,66 +43,58 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
 });
 
-// Load popular cities as suggestions
 function loadPopularCitiesSuggestions() {
-    const suggestionsHTML = popularCities.map(city => 
+    const suggestionsHTML = popularCities.map(city =>
         `<option value="${city}">`
     ).join('');
     suggestionsList.innerHTML = suggestionsHTML;
 }
 
-// Load saved locations from localStorage
 function loadSavedLocations() {
     savedLocations = Storage.get('saved-locations') || [];
-    
+
     if (savedLocations.length === 0) {
         savedLocationsGrid.style.display = 'none';
         noLocationsMessage.style.display = 'block';
         return;
     }
-    
+
     savedLocationsGrid.style.display = 'grid';
     noLocationsMessage.style.display = 'none';
-    
-    // Load weather for each saved location
+
     savedLocations.forEach(location => {
         loadLocationWeather(location);
     });
 }
 
-// Load weather data for a specific location
 async function loadWeatherData(location) {
     try {
         weatherLoading.style.display = 'flex';
-        
-        // Fetch current weather
+
         const currentWeatherResponse = await fetch(
             `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(location)}&units=${unitSystem}&appid=${WEATHER_API_KEY}`
         );
-        
+
         if (!currentWeatherResponse.ok) {
             throw new Error(`Weather API error: ${currentWeatherResponse.status}`);
         }
-        
+
         const currentWeatherData = await currentWeatherResponse.json();
-        
-        // Fetch 5-day forecast
+
         const forecastResponse = await fetch(
             `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(location)}&units=${unitSystem}&appid=${WEATHER_API_KEY}`
         );
-        
+
         const forecastData = await forecastResponse.json();
-        
-        // Update display
+
         updateLocationDisplay(currentWeatherData);
         displayCurrentWeather(currentWeatherData);
         displayWeatherDetails(currentWeatherData);
         displayForecast(forecastData);
-        
-        // Save as current location
+
         Storage.set('weather-location', location);
         currentLocation = location;
-        
+
     } catch (error) {
         console.error('Error loading weather data:', error);
         displayErrorMessage('current-weather-card', 'Unable to load weather data. Please try a different location.');
@@ -119,14 +103,12 @@ async function loadWeatherData(location) {
     }
 }
 
-// Update location display
 function updateLocationDisplay(weatherData) {
     const city = weatherData.name;
     const country = weatherData.sys.country;
     locationNameDisplay.textContent = `${city}, ${country}`;
 }
 
-// Display current weather
 function displayCurrentWeather(weatherData) {
     const temp = Math.round(weatherData.main.temp);
     const feelsLike = Math.round(weatherData.main.feels_like);
@@ -136,10 +118,10 @@ function displayCurrentWeather(weatherData) {
     const windSpeed = weatherData.wind.speed;
     const windDirection = getWindDirection(weatherData.wind.deg);
     const pressure = weatherData.main.pressure;
-    
+
     const unitSymbol = unitSystem === 'metric' ? '°C' : '°F';
     const windUnit = unitSystem === 'metric' ? 'm/s' : 'mph';
-    
+
     currentWeatherCard.innerHTML = `
         <div class="weather-main">
             <div class="weather-temp-large">${temp}${unitSymbol}</div>
@@ -153,21 +135,20 @@ function displayCurrentWeather(weatherData) {
     `;
 }
 
-// Display weather details
 function displayWeatherDetails(weatherData) {
     const humidity = weatherData.main.humidity;
     const windSpeed = weatherData.wind.speed;
     const pressure = weatherData.main.pressure;
     const visibility = weatherData.visibility;
-    const sunrise = new Date(weatherData.sys.sunrise * 1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    const sunset = new Date(weatherData.sys.sunset * 1000).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    
+    const sunrise = new Date(weatherData.sys.sunrise * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const sunset = new Date(weatherData.sys.sunset * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
     const windUnit = unitSystem === 'metric' ? 'm/s' : 'mph';
     const visibilityUnit = unitSystem === 'metric' ? 'km' : 'miles';
-    const visibilityValue = unitSystem === 'metric' 
-        ? (visibility / 1000).toFixed(1) 
+    const visibilityValue = unitSystem === 'metric'
+        ? (visibility / 1000).toFixed(1)
         : (visibility / 1609).toFixed(1);
-    
+
     weatherDetails.innerHTML = `
         <div class="weather-detail-card">
             <i class="fas fa-tint"></i>
@@ -202,16 +183,14 @@ function displayWeatherDetails(weatherData) {
     `;
 }
 
-// Display 5-day forecast
 function displayForecast(forecastData) {
-    // Group forecast by day
     const dailyForecast = {};
-    
+
     forecastData.list.forEach(item => {
         const date = new Date(item.dt * 1000);
         const day = date.toLocaleDateString('en-US', { weekday: 'short' });
         const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-        
+
         if (!dailyForecast[dateStr]) {
             dailyForecast[dateStr] = {
                 day,
@@ -221,23 +200,22 @@ function displayForecast(forecastData) {
                 descriptions: []
             };
         }
-        
+
         dailyForecast[dateStr].temps.push(item.main.temp);
         dailyForecast[dateStr].icons.push(item.weather[0].icon);
         dailyForecast[dateStr].descriptions.push(item.weather[0].description);
     });
-    
-    // Get next 5 days
+
     const forecastDays = Object.values(dailyForecast).slice(0, 5);
     const unitSymbol = unitSystem === 'metric' ? '°C' : '°F';
-    
+
     const forecastHTML = forecastDays.map(day => {
         const avgTemp = Math.round(day.temps.reduce((a, b) => a + b, 0) / day.temps.length);
         const maxTemp = Math.round(Math.max(...day.temps));
         const minTemp = Math.round(Math.min(...day.temps));
         const mostCommonIcon = getMostCommonElement(day.icons);
         const mostCommonDescription = getMostCommonElement(day.descriptions);
-        
+
         return `
             <div class="forecast-card">
                 <div class="forecast-day">${day.day}</div>
@@ -254,17 +232,16 @@ function displayForecast(forecastData) {
             </div>
         `;
     }).join('');
-    
+
     forecastContainer.innerHTML = forecastHTML;
 }
 
-// Load weather for a saved location
 async function loadLocationWeather(location) {
     try {
         const response = await fetch(
             `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(location.name)}&units=${unitSystem}&appid=${WEATHER_API_KEY}`
         );
-        
+
         if (response.ok) {
             const data = await response.json();
             updateLocationCard(location, data);
@@ -274,15 +251,14 @@ async function loadLocationWeather(location) {
     }
 }
 
-// Update location card in saved locations
 function updateLocationCard(location, weatherData) {
     const temp = Math.round(weatherData.main.temp);
     const description = weatherData.weather[0].description;
     const icon = weatherData.weather[0].icon;
     const unitSymbol = unitSystem === 'metric' ? '°C' : '°F';
-    
+
     const locationCard = document.querySelector(`[data-location="${location.name}"]`);
-    
+
     if (!locationCard) {
         // Create new card
         const cardHTML = `
@@ -308,15 +284,13 @@ function updateLocationCard(location, weatherData) {
                 </div>
             </div>
         `;
-        
+
         savedLocationsGrid.insertAdjacentHTML('beforeend', cardHTML);
-        
-        // Add event listener to remove button
+
         const newCard = savedLocationsGrid.lastElementChild;
         const removeBtn = newCard.querySelector('.btn-remove-location');
         removeBtn.addEventListener('click', () => removeLocation(location.name));
-        
-        // Add click handler to switch to this location
+
         newCard.addEventListener('click', (e) => {
             if (!e.target.closest('.btn-remove-location')) {
                 loadWeatherData(location.name);
@@ -324,12 +298,11 @@ function updateLocationCard(location, weatherData) {
             }
         });
     } else {
-        // Update existing card
         const tempElement = locationCard.querySelector('.location-temp');
         const conditionElement = locationCard.querySelector('.location-condition');
         const iconElement = locationCard.querySelector('.location-icon');
         const updatedElement = locationCard.querySelector('.location-updated');
-        
+
         if (tempElement) tempElement.textContent = `${temp}${unitSymbol}`;
         if (conditionElement) conditionElement.textContent = capitalizeWords(description);
         if (iconElement) {
@@ -340,36 +313,31 @@ function updateLocationCard(location, weatherData) {
     }
 }
 
-// Remove a saved location
 function removeLocation(locationName) {
     savedLocations = savedLocations.filter(loc => loc.name !== locationName);
     Storage.set('saved-locations', savedLocations);
-    
-    // Remove card from DOM
+
     const card = document.querySelector(`[data-location="${locationName}"]`);
     if (card) card.remove();
-    
-    // Show no locations message if empty
+
     if (savedLocations.length === 0) {
         savedLocationsGrid.style.display = 'none';
         noLocationsMessage.style.display = 'block';
     }
 }
 
-// Get user's current location
 function getUserLocation() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             async (position) => {
                 const lat = position.coords.latitude;
                 const lon = position.coords.longitude;
-                
+
                 try {
-                    // Reverse geocode to get city name
                     const response = await fetch(
                         `https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lon}&limit=1&appid=${WEATHER_API_KEY}`
                     );
-                    
+
                     if (response.ok) {
                         const data = await response.json();
                         if (data[0]) {
@@ -392,49 +360,43 @@ function getUserLocation() {
     }
 }
 
-// Setup event listeners
 function setupEventListeners() {
-    // Location search
     const debouncedSearch = debounce((query) => {
         if (query.trim().length >= 2) {
             loadWeatherData(query);
         }
     }, 1000);
-    
+
     locationSearchInput.addEventListener('input', (e) => {
         debouncedSearch(e.target.value);
     });
-    
+
     locationSearchBtn.addEventListener('click', () => {
         if (locationSearchInput.value.trim()) {
             loadWeatherData(locationSearchInput.value.trim());
         }
     });
-    
-    // Use current location
+
     useLocationBtn.addEventListener('click', getUserLocation);
-    
-    // Add location modal
+
     addLocationBtn.addEventListener('click', () => {
         if (addLocationModal) {
             addLocationModal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
     });
-    
-    // Location form submission
+
     if (locationForm) {
         locationForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            
+
             const locationInput = document.getElementById('new-location');
             const labelInput = document.getElementById('location-label');
-            
+
             const locationName = locationInput.value.trim();
             const locationLabel = labelInput.value.trim();
-            
+
             if (locationName) {
-                // Check if already saved
                 const isAlreadySaved = savedLocations.some(loc => loc.name === locationName);
                 if (!isAlreadySaved) {
                     const newLocation = {
@@ -442,22 +404,19 @@ function setupEventListeners() {
                         label: locationLabel || null,
                         addedAt: new Date().toISOString()
                     };
-                    
+
                     savedLocations.push(newLocation);
                     Storage.set('saved-locations', savedLocations);
-                    
-                    // Load and display weather for new location
+
                     loadLocationWeather(newLocation);
-                    
-                    // Hide no locations message
+
                     noLocationsMessage.style.display = 'none';
                     savedLocationsGrid.style.display = 'grid';
-                    
-                    // Reset form and close modal
+
                     locationForm.reset();
                     addLocationModal.style.display = 'none';
                     document.body.style.overflow = '';
-                    
+
                     showNotification('Location added successfully!');
                 } else {
                     alert('This location is already saved.');
@@ -465,35 +424,29 @@ function setupEventListeners() {
             }
         });
     }
-    
-    // Map view buttons
+
     document.querySelectorAll('.btn-view-map').forEach(button => {
         button.addEventListener('click', (e) => {
             const mapType = e.target.dataset.map;
             openMapModal(mapType);
         });
     });
-    
-    // Unit system toggle (optional - you could add this as a button)
-    // document.getElementById('unit-toggle').addEventListener('click', toggleUnitSystem);
+
 }
 
-// Open map modal
 function openMapModal(mapType) {
     const mapModal = document.getElementById('map-modal');
     const mapTitle = document.getElementById('map-modal-title');
     const mapContainer = document.getElementById('full-map-container');
-    
+
     if (!mapModal) return;
-    
+
     mapTitle.textContent = mapType === 'temperature' ? 'Temperature Map' : 'Precipitation Map';
-    
-    // In a real implementation, you would embed an actual map here
-    // For now, we'll show a placeholder with OpenWeatherMap map URL
-    const mapUrl = mapType === 'temperature' 
+
+    const mapUrl = mapType === 'temperature'
         ? 'https://tile.openweathermap.org/map/temp_new/{z}/{x}/{y}.png?appid={API_KEY}'
         : 'https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid={API_KEY}';
-    
+
     mapContainer.innerHTML = `
         <div class="map-placeholder-full">
             <img src="images/weather/${mapType}-map-full.jpg" 
@@ -505,17 +458,16 @@ function openMapModal(mapType) {
             </div>
         </div>
     `;
-    
+
     mapModal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
-    
-    // Close modal handlers
+
     const closeButton = mapModal.querySelector('.modal-close');
     closeButton.addEventListener('click', () => {
         mapModal.style.display = 'none';
         document.body.style.overflow = '';
     });
-    
+
     mapModal.addEventListener('click', (e) => {
         if (e.target === mapModal) {
             mapModal.style.display = 'none';
@@ -524,7 +476,6 @@ function openMapModal(mapType) {
     });
 }
 
-// Helper functions
 function capitalizeWords(str) {
     return str.replace(/\b\w/g, char => char.toUpperCase());
 }
@@ -540,17 +491,17 @@ function getMostCommonElement(arr) {
     arr.forEach(item => {
         counts[item] = (counts[item] || 0) + 1;
     });
-    
+
     let maxCount = 0;
     let mostCommon = arr[0];
-    
+
     for (const [item, count] of Object.entries(counts)) {
         if (count > maxCount) {
             maxCount = count;
             mostCommon = item;
         }
     }
-    
+
     return mostCommon;
 }
 
@@ -561,13 +512,13 @@ function showNotification(message) {
         <i class="fas fa-check-circle"></i>
         <span>${message}</span>
     `;
-    
+
     document.body.appendChild(notification);
-    
+
     setTimeout(() => {
         notification.classList.add('show');
     }, 10);
-    
+
     setTimeout(() => {
         notification.classList.remove('show');
         setTimeout(() => {
@@ -576,7 +527,6 @@ function showNotification(message) {
     }, 3000);
 }
 
-// Export for testing
 export {
     loadWeatherData,
     getUserLocation,

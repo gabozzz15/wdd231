@@ -1,16 +1,16 @@
-import { 
-    LoadingSpinner, 
-    Storage, 
-    FormValidator, 
+﻿import {
+    LoadingSpinner,
+    Storage,
+    FormValidator,
     debounce,
     formatDate,
     capitalizeFirstLetter,
     displayErrorMessage,
-    initializeCommon 
+    initializeCommon
 } from './main.js';
 
-const NEWS_API_KEY = 'fa6a29ed86a447fe9b1f7e126df60078'; 
-const WEATHER_API_KEY = 'cd2d094e1adbb9c4c2055c1f34b4a2e1'; 
+const NEWS_API_KEY = 'fa6a29ed86a447fe9b1f7e126df60078';
+const WEATHER_API_KEY = 'cd2d094e1adbb9c4c2055c1f34b4a2e1';
 
 initializeCommon();
 
@@ -26,28 +26,28 @@ const newsletterForm = document.getElementById('newsletter-form');
 async function fetchBreakingNews() {
     try {
         LoadingSpinner.show('breaking-news-container');
-        
+
         const cachedNews = Storage.get('breaking-news');
         const lastFetchTime = Storage.get('news-last-fetch');
         const now = Date.now();
-        
+
         // Use cache if less than 5 minutes old
         if (cachedNews && lastFetchTime && (now - lastFetchTime < 5 * 60 * 1000)) {
             displayBreakingNews(cachedNews);
             LoadingSpinner.hide('breaking-news-container');
             return;
         }
-        
+
         const response = await fetch(
             `https://newsapi.org/v2/top-headlines?country=us&pageSize=8&apiKey=${NEWS_API_KEY}`
         );
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const data = await response.json();
-        
+
         if (data.articles && data.articles.length > 0) {
             const filteredArticles = data.articles.filter(article => article.title !== '[Removed]');
             Storage.set('breaking-news', filteredArticles);
@@ -70,7 +70,7 @@ function displayBreakingNews(articles) {
         breakingNewsContainer.innerHTML = '<p class="no-news">No breaking news available at the moment.</p>';
         return;
     }
-    
+
     const newsHTML = articles.slice(0, 4).map((article, index) => `
         <div class="breaking-news-item">
             <h3>${article.title}</h3>
@@ -82,9 +82,9 @@ function displayBreakingNews(articles) {
             <button class="read-more-btn" data-index="${index}">Read More</button>
         </div>
     `).join('');
-    
+
     breakingNewsContainer.innerHTML = newsHTML;
-    
+
     // Add event listeners to read more buttons
     document.querySelectorAll('.read-more-btn').forEach(button => {
         button.addEventListener('click', (e) => {
@@ -98,26 +98,26 @@ function displayBreakingNews(articles) {
 async function fetchCurrentWeather() {
     try {
         LoadingSpinner.show('current-weather');
-        
+
         const cachedWeather = Storage.get('current-weather');
         const lastFetchTime = Storage.get('weather-last-fetch');
         const now = Date.now();
-        
+
         // Use cache if less than 10 minutes old
         if (cachedWeather && lastFetchTime && (now - lastFetchTime < 10 * 60 * 1000)) {
             displayCurrentWeather(cachedWeather);
             LoadingSpinner.hide('current-weather');
             return;
         }
-        
+
         const response = await fetch(
             `https://api.openweathermap.org/data/2.5/weather?q=${DEFAULT_CITY}&units=metric&appid=${WEATHER_API_KEY}`
         );
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const data = await response.json();
         Storage.set('current-weather', data);
         Storage.set('weather-last-fetch', now);
@@ -138,7 +138,7 @@ function displayCurrentWeather(weatherData) {
     const icon = weatherData.weather[0].icon;
     const humidity = weatherData.main.humidity;
     const windSpeed = weatherData.wind.speed;
-    
+
     const weatherHTML = `
         <div class="current-weather-info">
             <div class="weather-icon">
@@ -165,7 +165,7 @@ function displayCurrentWeather(weatherData) {
             </div>
         </div>
     `;
-    
+
     currentWeatherContainer.innerHTML = weatherHTML;
 }
 
@@ -173,28 +173,28 @@ function displayCurrentWeather(weatherData) {
 async function fetchTopStories() {
     try {
         LoadingSpinner.show('top-stories');
-        
+
         const cachedStories = Storage.get('top-stories');
         const lastFetchTime = Storage.get('stories-last-fetch');
         const now = Date.now();
-        
+
         // Use cache if less than 5 minutes old
         if (cachedStories && lastFetchTime && (now - lastFetchTime < 5 * 60 * 1000)) {
             displayTopStories(cachedStories);
             LoadingSpinner.hide('top-stories');
             return;
         }
-        
+
         const response = await fetch(
             `https://newsapi.org/v2/top-headlines?country=us&pageSize=12&apiKey=${NEWS_API_KEY}`
         );
-        
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const data = await response.json();
-        
+
         if (data.articles && data.articles.length > 0) {
             const filteredStories = data.articles.filter(article => article.title !== '[Removed]');
             Storage.set('top-stories', filteredStories);
@@ -217,7 +217,7 @@ function displayTopStories(stories) {
         topStoriesContainer.innerHTML = '<p class="no-stories">No top stories available at the moment.</p>';
         return;
     }
-    
+
     const storiesHTML = stories.slice(0, 12).map((story, index) => `
         <article class="story-card">
             <img src="${story.urlToImage || 'images/news-placeholder.jpg'}" 
@@ -234,11 +234,10 @@ function displayTopStories(stories) {
             </div>
         </article>
     `).join('');
-    
+
     topStoriesContainer.innerHTML = storiesHTML;
 }
 
-// Open article modal
 function openArticleModal(article) {
     const modal = document.createElement('div');
     modal.className = 'modal';
@@ -267,20 +266,18 @@ function openArticleModal(article) {
             </div>
         </div>
     `;
-    
+
     document.body.appendChild(modal);
     modal.style.display = 'flex';
     document.body.style.overflow = 'hidden';
-    
-    // Add event listener to close button
+
     const closeButton = modal.querySelector('.modal-close');
     closeButton.addEventListener('click', () => {
         modal.style.display = 'none';
         document.body.style.overflow = '';
         modal.remove();
     });
-    
-    // Close modal when clicking outside
+
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             modal.style.display = 'none';
@@ -288,8 +285,7 @@ function openArticleModal(article) {
             modal.remove();
         }
     });
-    
-    // Close modal on escape key
+
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && modal.style.display === 'flex') {
             modal.style.display = 'none';
@@ -299,23 +295,20 @@ function openArticleModal(article) {
     });
 }
 
-// Global search functionality
 function setupGlobalSearch() {
     let isSearching = false;
-    
+
     const debouncedSearch = debounce(async (query) => {
         if (query.length < 3) {
-            // Hide results if query is too short
             const resultsDropdown = document.querySelector('.search-results-dropdown');
             if (resultsDropdown) {
                 resultsDropdown.style.display = 'none';
             }
             return;
         }
-        
+
         try {
             isSearching = true;
-            // Show loading state
             const resultsDropdown = document.querySelector('.search-results-dropdown');
             if (resultsDropdown) {
                 resultsDropdown.innerHTML = `
@@ -326,11 +319,11 @@ function setupGlobalSearch() {
                 `;
                 resultsDropdown.style.display = 'block';
             }
-            
+
             const response = await fetch(
                 `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&pageSize=6&apiKey=${NEWS_API_KEY}`
             );
-            
+
             if (response.ok) {
                 const data = await response.json();
                 displaySearchResults(data.articles);
@@ -353,31 +346,27 @@ function setupGlobalSearch() {
             isSearching = false;
         }
     }, 500);
-    
+
     globalSearchInput.addEventListener('input', (e) => {
         debouncedSearch(e.target.value);
     });
-    
+
     searchButton.addEventListener('click', () => {
         if (globalSearchInput.value.length >= 3 && !isSearching) {
             debouncedSearch(globalSearchInput.value);
         }
     });
-    
-    // Clear search on page refresh
+
     globalSearchInput.value = '';
 }
 
-// Truncate text utility
 function truncateText(text, maxLength) {
     if (!text) return '';
     if (text.length <= maxLength) return text;
     return text.substr(0, maxLength).trim() + '...';
 }
 
-// Display search results
 function displaySearchResults(articles) {
-    // Create or update search results dropdown
     let resultsDropdown = document.querySelector('.search-results-dropdown');
     if (!resultsDropdown) {
         resultsDropdown = document.createElement('div');
@@ -386,10 +375,9 @@ function displaySearchResults(articles) {
         searchContainer.classList.add('has-search-dropdown');
         searchContainer.appendChild(resultsDropdown);
     }
-    
-    // Clear previous results
+
     resultsDropdown.innerHTML = '';
-    
+
     if (!articles || articles.length === 0) {
         resultsDropdown.innerHTML = `
             <div class="no-results">
@@ -401,10 +389,9 @@ function displaySearchResults(articles) {
         resultsDropdown.style.display = 'block';
         return;
     }
-    
-    // Limit to 6 results for better UX
+
     const limitedArticles = articles.slice(0, 6);
-    
+
     const resultsHTML = limitedArticles.map(article => `
         <div class="search-result-item" data-url="${article.url}">
             <h4>${article.title}</h4>
@@ -417,14 +404,12 @@ function displaySearchResults(articles) {
             </a>
         </div>
     `).join('');
-    
+
     resultsDropdown.innerHTML = resultsHTML;
     resultsDropdown.style.display = 'block';
-    
-    // Add click handler to each result item
+
     document.querySelectorAll('.search-result-item').forEach(item => {
         item.addEventListener('click', (e) => {
-            // Don't trigger if clicking on the link itself
             if (!e.target.closest('a')) {
                 const url = item.dataset.url;
                 if (url) {
@@ -433,19 +418,17 @@ function displaySearchResults(articles) {
             }
         });
     });
-    
-    // Hide dropdown when clicking outside
+
     document.addEventListener('click', (e) => {
         const isSearchInput = e.target === globalSearchInput;
         const isSearchButton = e.target === searchButton;
         const isInResults = resultsDropdown.contains(e.target);
-        
+
         if (!isSearchInput && !isSearchButton && !isInResults) {
             resultsDropdown.style.display = 'none';
         }
     });
-    
-    // Hide dropdown on escape key
+
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             resultsDropdown.style.display = 'none';
@@ -453,57 +436,44 @@ function displaySearchResults(articles) {
     });
 }
 
-// Newsletter form handling
 function setupNewsletterForm() {
     if (!newsletterForm) return;
-    
-    newsletterForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
+
+    newsletterForm.addEventListener('submit', (e) => {
         const emailInput = newsletterForm.querySelector('#email');
         const email = emailInput.value.trim();
-        
-        // Validate email
+
         if (!FormValidator.validateEmail(email)) {
+            e.preventDefault();
             FormValidator.showError(emailInput, 'Please enter a valid email address');
             return;
         }
-        
+
         FormValidator.clearError(emailInput);
-        
-        // Get form data
+
         const formData = new FormData(newsletterForm);
         const categories = formData.getAll('categories');
         const includeWeatherAlerts = formData.get('weather-alerts') === 'on';
-        
-        // Save to localStorage
+
         const preferences = {
             email,
             categories,
             includeWeatherAlerts,
             subscribedAt: new Date().toISOString()
         };
-        
+
         Storage.set('newsletter-preferences', preferences);
-        
-        // Show success message
-        alert('Thank you for subscribing! You will receive our newsletter soon.');
-        newsletterForm.reset();
+
     });
 }
 
-// Initialize page
 document.addEventListener('DOMContentLoaded', () => {
-    // Fetch and display data
     fetchBreakingNews();
     fetchCurrentWeather();
     fetchTopStories();
-    
-    // Setup event listeners
     setupGlobalSearch();
     setupNewsletterForm();
-    
-    // Setup refresh buttons
+
     document.querySelectorAll('.refresh-btn').forEach(button => {
         button.addEventListener('click', () => {
             if (button.dataset.type === 'news') {
@@ -515,7 +485,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Export for testing
 export {
     fetchBreakingNews,
     fetchCurrentWeather,
