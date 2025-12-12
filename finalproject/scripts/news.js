@@ -1,4 +1,4 @@
-import {
+﻿import {
     LoadingSpinner,
     Storage,
     FormValidator,
@@ -88,7 +88,6 @@ function loadNewsSources() {
     sourcesGrid.innerHTML = sourcesHTML;
 }
 
-// Load articles from API
 async function loadArticles() {
     try {
         newsLoading.style.display = 'flex';
@@ -97,13 +96,10 @@ async function loadArticles() {
         let apiUrl;
 
         if (currentSearchQuery) {
-            // Search for specific query
             apiUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(currentSearchQuery)}&sortBy=${currentSortBy}&page=${currentPage}&pageSize=${articlesPerPage}&apiKey=${NEWS_API_KEY}`;
         } else if (currentCategory !== 'all') {
-            // Get by category
             apiUrl = `https://newsapi.org/v2/top-headlines?category=${currentCategory}&country=us&page=${currentPage}&pageSize=${articlesPerPage}&apiKey=${NEWS_API_KEY}`;
         } else {
-            // Get general top headlines
             apiUrl = `https://newsapi.org/v2/top-headlines?country=us&page=${currentPage}&pageSize=${articlesPerPage}&apiKey=${NEWS_API_KEY}`;
         }
 
@@ -116,7 +112,6 @@ async function loadArticles() {
         const data = await response.json();
 
         if (data.articles && data.articles.length > 0) {
-            // Filter out removed articles
             const validArticles = data.articles.filter(article =>
                 article.title !== '[Removed]' && article.urlToImage
             );
@@ -149,7 +144,6 @@ async function loadArticles() {
     }
 }
 
-// Display articles
 function displayArticles() {
     if (currentPage === 1) {
         newsGridContainer.innerHTML = '';
@@ -164,8 +158,8 @@ function displayArticles() {
         return;
     }
 
-    const articlesHTML = articlesToShow.map((article) => `
-        <article class="news-card">
+    const articlesHTML = articlesToShow.map((article, index) => `
+        <article class="news-card" data-index="${startIndex + index}">
             <div class="news-card-image">
                 <img src="${article.urlToImage}" 
                      alt="${article.title}" 
@@ -181,7 +175,7 @@ function displayArticles() {
                     <span class="news-date">${formatDate(article.publishedAt)}</span>
                 </div>
                 <div class="news-actions">
-                    <a href="${article.url}" target="_blank" rel="noopener" class="btn-read">Read Article</a>
+                    <button class="btn-read" data-url="${article.url}">Read Article</button>
                 </div>
             </div>
         </article>
@@ -192,12 +186,134 @@ function displayArticles() {
     } else {
         newsGridContainer.insertAdjacentHTML('beforeend', articlesHTML);
     }
+
+    attachArticleEventListeners();
 }
 
 function showNoResults() {
     newsGridContainer.innerHTML = '';
     noResultsMessage.style.display = 'block';
     loadMoreContainer.style.display = 'none';
+}
+
+function attachArticleEventListeners() {
+    document.querySelectorAll('.btn-read').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const url = e.target.dataset.url;
+            if (url) {
+                window.open(url, '_blank', 'noopener');
+            }
+        });
+    });
+}
+
+function saveArticle(article) {
+    const savedArticles = Storage.get('saved-articles') || [];
+
+    const isAlreadySaved = savedArticles.some(saved => saved.url === article.url);
+    if (!isAlreadySaved) {
+        savedArticles.push({
+            ...article,
+            savedAt: new Date().toISOString()
+        });
+        Storage.set('saved-articles', savedArticles);
+
+        showNotification('Article saved to your reading list!');
+    }
+}
+
+function openArticleModal(article) {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.id = 'article-detail-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>${article.title}</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="article-detail-image">
+                    <img src="${article.urlToImage}" 
+                         alt="${article.title}"
+                         onerror="this.src='images/news-placeholder.jpg'">
+                </div>
+                <div class="article-detail-meta">
+                    <span><i class="fas fa-user"></i> ${article.author || 'Unknown Author'}</span>
+                    <span><i class="fas fa-newspaper"></i> ${article.source.name || 'Unknown Source'}</span>
+                    <span><i class="fas fa-clock"></i> ${formatDate(article.publishedAt)}</span>
+                </div>
+                <div class="article-detail-content">
+                    <p>${article.content || article.description || 'Content not available.'}</p>
+                </div>
+                <div class="article-detail-actions">
+                    <a href="${article.url}" target="_blank" rel="noopener" class="btn-external">
+                        Read on original site <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <button class="btn-save-modal" data-article='${JSON.stringify(article)}'>
+                        <i class="far fa-bookmark"></i> Save Article
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+
+    const closeButton = modal.querySelector('.modal-close');
+    closeButton.addEventListener('click', () => {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+        modal.remove();
+    });
+
+    const saveButton = modal.querySelector('.btn-save-modal');
+    saveButton.addEventListener('click', () => {
+        saveArticle(article);
+        saveButton.innerHTML = '<i class="fas fa-bookmark"></i> Saved';
+        saveButton.disabled = true;
+    });
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+            modal.remove();
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.style.display === 'flex') {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+            modal.remove();
+        }
+    });
+}
+
+function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.innerHTML = `
+        <i class="fas fa-check-circle"></i>
+        <span>${message}</span>
+    `;
+
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, 3000);
 }
 
 function setupEventListeners() {
@@ -229,6 +345,7 @@ function setupEventListeners() {
     sortSelect.addEventListener('change', () => {
         currentSortBy = sortSelect.value;
         resetAndLoadArticles();
+
         const preferences = Storage.get('news-preferences') || {};
         preferences.sortBy = currentSortBy;
         Storage.set('news-preferences', preferences);
@@ -247,6 +364,7 @@ function setupEventListeners() {
         currentSearchQuery = newsSearchInput.value;
         resetAndLoadArticles();
     });
+
     loadMoreBtn.addEventListener('click', () => {
         currentPage++;
         loadArticles();
@@ -278,28 +396,6 @@ function setupEventListeners() {
     }
 }
 
-function showNotification(message) {
-    const notification = document.createElement('div');
-    notification.className = 'notification';
-    notification.innerHTML = `
-        <i class="fas fa-check-circle"></i>
-        <span>${message}</span>
-    `;
-
-    document.body.appendChild(notification);
-
-    setTimeout(() => {
-        notification.classList.add('show');
-    }, 10);
-
-    setTimeout(() => {
-        notification.classList.remove('show');
-        setTimeout(() => {
-            notification.remove();
-        }, 300);
-    }, 3000);
-}
-
 function resetAndLoadArticles() {
     currentPage = 1;
     allArticles = [];
@@ -308,5 +404,7 @@ function resetAndLoadArticles() {
 
 export {
     loadArticles,
+    saveArticle,
+    openArticleModal,
     resetAndLoadArticles
 };

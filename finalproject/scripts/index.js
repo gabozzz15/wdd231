@@ -1,20 +1,9 @@
-﻿import {
-    LoadingSpinner,
-    Storage,
-    FormValidator,
-    debounce,
-    formatDate,
-    capitalizeFirstLetter,
-    displayErrorMessage,
-    initializeCommon
-} from './main.js';
+﻿import { LoadingSpinner, Storage, FormValidator, debounce } from './main.js';
 
 const NEWS_API_KEY = 'fa6a29ed86a447fe9b1f7e126df60078';
 const WEATHER_API_KEY = 'cd2d094e1adbb9c4c2055c1f34b4a2e1';
+const DEFAULT_CITY = 'Caracas';
 
-initializeCommon();
-
-const DEFAULT_CITY = Storage.get('weather-location') || 'Caracas';
 const breakingNewsContainer = document.getElementById('breaking-news-container');
 const currentWeatherContainer = document.getElementById('current-weather');
 const topStoriesContainer = document.getElementById('top-stories');
@@ -22,7 +11,6 @@ const globalSearchInput = document.getElementById('global-search');
 const searchButton = document.getElementById('search-btn');
 const newsletterForm = document.getElementById('newsletter-form');
 
-// Fetch breaking news from NewsAPI
 async function fetchBreakingNews() {
     try {
         LoadingSpinner.show('breaking-news-container');
@@ -31,7 +19,6 @@ async function fetchBreakingNews() {
         const lastFetchTime = Storage.get('news-last-fetch');
         const now = Date.now();
 
-        // Use cache if less than 5 minutes old
         if (cachedNews && lastFetchTime && (now - lastFetchTime < 5 * 60 * 1000)) {
             displayBreakingNews(cachedNews);
             LoadingSpinner.hide('breaking-news-container');
@@ -64,7 +51,6 @@ async function fetchBreakingNews() {
     }
 }
 
-// Display breaking news articles
 function displayBreakingNews(articles) {
     if (!articles || articles.length === 0) {
         breakingNewsContainer.innerHTML = '<p class="no-news">No breaking news available at the moment.</p>';
@@ -85,7 +71,6 @@ function displayBreakingNews(articles) {
 
     breakingNewsContainer.innerHTML = newsHTML;
 
-    // Add event listeners to read more buttons
     document.querySelectorAll('.read-more-btn').forEach(button => {
         button.addEventListener('click', (e) => {
             const index = e.target.dataset.index;
@@ -94,7 +79,6 @@ function displayBreakingNews(articles) {
     });
 }
 
-// Fetch current weather from OpenWeatherMap
 async function fetchCurrentWeather() {
     try {
         LoadingSpinner.show('current-weather');
@@ -103,7 +87,6 @@ async function fetchCurrentWeather() {
         const lastFetchTime = Storage.get('weather-last-fetch');
         const now = Date.now();
 
-        // Use cache if less than 10 minutes old
         if (cachedWeather && lastFetchTime && (now - lastFetchTime < 10 * 60 * 1000)) {
             displayCurrentWeather(cachedWeather);
             LoadingSpinner.hide('current-weather');
@@ -130,7 +113,6 @@ async function fetchCurrentWeather() {
     }
 }
 
-// Display current weather
 function displayCurrentWeather(weatherData) {
     const temperature = Math.round(weatherData.main.temp);
     const feelsLike = Math.round(weatherData.main.feels_like);
@@ -169,7 +151,6 @@ function displayCurrentWeather(weatherData) {
     currentWeatherContainer.innerHTML = weatherHTML;
 }
 
-// Fetch top stories from NewsAPI
 async function fetchTopStories() {
     try {
         LoadingSpinner.show('top-stories');
@@ -178,7 +159,6 @@ async function fetchTopStories() {
         const lastFetchTime = Storage.get('stories-last-fetch');
         const now = Date.now();
 
-        // Use cache if less than 5 minutes old
         if (cachedStories && lastFetchTime && (now - lastFetchTime < 5 * 60 * 1000)) {
             displayTopStories(cachedStories);
             LoadingSpinner.hide('top-stories');
@@ -211,7 +191,6 @@ async function fetchTopStories() {
     }
 }
 
-// Display top stories
 function displayTopStories(stories) {
     if (!stories || stories.length === 0) {
         topStoriesContainer.innerHTML = '<p class="no-stories">No top stories available at the moment.</p>';
@@ -236,6 +215,40 @@ function displayTopStories(stories) {
     `).join('');
 
     topStoriesContainer.innerHTML = storiesHTML;
+}
+
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInHours = Math.floor((now - date) / (1000 * 60 * 60));
+
+    if (diffInHours < 1) {
+        return 'Just now';
+    } else if (diffInHours < 24) {
+        return `${diffInHours} hours ago`;
+    } else {
+        return date.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+        });
+    }
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function displayErrorMessage(containerId, message) {
+    const container = document.getElementById(containerId);
+    if (container) {
+        container.innerHTML = `
+            <div class="error-message">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>${message}</p>
+            </div>
+        `;
+    }
 }
 
 function openArticleModal(article) {
@@ -296,54 +309,20 @@ function openArticleModal(article) {
 }
 
 function setupGlobalSearch() {
-    let isSearching = false;
-
     const debouncedSearch = debounce(async (query) => {
-        if (query.length < 3) {
-            const resultsDropdown = document.querySelector('.search-results-dropdown');
-            if (resultsDropdown) {
-                resultsDropdown.style.display = 'none';
-            }
-            return;
-        }
+        if (query.length < 3) return;
 
         try {
-            isSearching = true;
-            const resultsDropdown = document.querySelector('.search-results-dropdown');
-            if (resultsDropdown) {
-                resultsDropdown.innerHTML = `
-                    <div style="padding: 2rem; text-align: center;">
-                        <div class="spinner" style="margin: 0 auto 1rem;"></div>
-                        <p>Searching for "${query}"...</p>
-                    </div>
-                `;
-                resultsDropdown.style.display = 'block';
-            }
-
             const response = await fetch(
-                `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&pageSize=6&apiKey=${NEWS_API_KEY}`
+                `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&pageSize=5&apiKey=${NEWS_API_KEY}`
             );
 
             if (response.ok) {
                 const data = await response.json();
                 displaySearchResults(data.articles);
-            } else {
-                throw new Error(`HTTP error! status: ${response.status}`);
             }
         } catch (error) {
             console.error('Search error:', error);
-            const resultsDropdown = document.querySelector('.search-results-dropdown');
-            if (resultsDropdown) {
-                resultsDropdown.innerHTML = `
-                    <div class="no-results">
-                        <i class="fas fa-exclamation-triangle" style="color: var(--error-red); margin-bottom: 1rem;"></i>
-                        <p>Search failed. Please try again.</p>
-                    </div>
-                `;
-                resultsDropdown.style.display = 'block';
-            }
-        } finally {
-            isSearching = false;
         }
     }, 500);
 
@@ -352,18 +331,10 @@ function setupGlobalSearch() {
     });
 
     searchButton.addEventListener('click', () => {
-        if (globalSearchInput.value.length >= 3 && !isSearching) {
+        if (globalSearchInput.value.length >= 3) {
             debouncedSearch(globalSearchInput.value);
         }
     });
-
-    globalSearchInput.value = '';
-}
-
-function truncateText(text, maxLength) {
-    if (!text) return '';
-    if (text.length <= maxLength) return text;
-    return text.substr(0, maxLength).trim() + '...';
 }
 
 function displaySearchResults(articles) {
@@ -371,66 +342,28 @@ function displaySearchResults(articles) {
     if (!resultsDropdown) {
         resultsDropdown = document.createElement('div');
         resultsDropdown.className = 'search-results-dropdown';
-        const searchContainer = globalSearchInput.parentNode;
-        searchContainer.classList.add('has-search-dropdown');
-        searchContainer.appendChild(resultsDropdown);
+        globalSearchInput.parentNode.appendChild(resultsDropdown);
     }
 
-    resultsDropdown.innerHTML = '';
-
     if (!articles || articles.length === 0) {
-        resultsDropdown.innerHTML = `
-            <div class="no-results">
-                <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 1rem; color: var(--text-secondary);"></i>
-                <p>No results found for "${globalSearchInput.value}"</p>
-                <p style="font-size: 0.875rem; margin-top: 0.5rem;">Try different keywords</p>
-            </div>
-        `;
+        resultsDropdown.innerHTML = '<p class="no-results">No results found</p>';
         resultsDropdown.style.display = 'block';
         return;
     }
 
-    const limitedArticles = articles.slice(0, 6);
-
-    const resultsHTML = limitedArticles.map(article => `
-        <div class="search-result-item" data-url="${article.url}">
+    const resultsHTML = articles.map(article => `
+        <div class="search-result-item">
             <h4>${article.title}</h4>
-            <p>${article.source?.name || 'Unknown source'} • ${formatDate(article.publishedAt)}</p>
-            <p style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem;">
-                ${article.description ? truncateText(article.description, 100) : 'No description available'}
-            </p>
-            <a href="${article.url}" target="_blank" rel="noopener" class="read-article-link">
-                Read full article <i class="fas fa-external-link-alt"></i>
-            </a>
+            <p>${article.source.name} • ${formatDate(article.publishedAt)}</p>
+            <a href="${article.url}" target="_blank" rel="noopener">Read more</a>
         </div>
     `).join('');
 
     resultsDropdown.innerHTML = resultsHTML;
     resultsDropdown.style.display = 'block';
 
-    document.querySelectorAll('.search-result-item').forEach(item => {
-        item.addEventListener('click', (e) => {
-            if (!e.target.closest('a')) {
-                const url = item.dataset.url;
-                if (url) {
-                    window.open(url, '_blank', 'noopener');
-                }
-            }
-        });
-    });
-
     document.addEventListener('click', (e) => {
-        const isSearchInput = e.target === globalSearchInput;
-        const isSearchButton = e.target === searchButton;
-        const isInResults = resultsDropdown.contains(e.target);
-
-        if (!isSearchInput && !isSearchButton && !isInResults) {
-            resultsDropdown.style.display = 'none';
-        }
-    });
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
+        if (!resultsDropdown.contains(e.target) && e.target !== globalSearchInput) {
             resultsDropdown.style.display = 'none';
         }
     });
@@ -439,7 +372,7 @@ function displaySearchResults(articles) {
 function setupNewsletterForm() {
     if (!newsletterForm) return;
 
-    newsletterForm.addEventListener('submit', (e) => {
+    newsletterForm.addEventListener('submit', async (e) => {
         const emailInput = newsletterForm.querySelector('#email');
         const email = emailInput.value.trim();
 
@@ -463,20 +396,8 @@ function setupNewsletterForm() {
         };
 
         Storage.set('newsletter-preferences', preferences);
-    });
 
-    // Set timestamp field value
-    const timestampField = document.getElementById('timestamp-field');
-    if (timestampField) {
-        timestampField.value = new Date().toISOString();
-    }
-
-    // Ensure at least one category is selected on submit
-    newsletterForm.addEventListener('submit', function () {
-        const categorySelect = document.getElementById('news-categories');
-        if (categorySelect && categorySelect.selectedOptions.length === 0) {
-            categorySelect.querySelector('option[value="general"]').selected = true;
-        }
+        document.getElementById('timestamp-field').value = new Date().toISOString();
     });
 }
 
@@ -484,6 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchBreakingNews();
     fetchCurrentWeather();
     fetchTopStories();
+
     setupGlobalSearch();
     setupNewsletterForm();
 
@@ -498,11 +420,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-export {
-    fetchBreakingNews,
-    fetchCurrentWeather,
-    fetchTopStories,
-    displayBreakingNews,
-    displayCurrentWeather,
-    displayTopStories
-};
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        fetchBreakingNews,
+        fetchCurrentWeather,
+        fetchTopStories,
+        formatDate,
+        capitalizeFirstLetter
+    };
+}
